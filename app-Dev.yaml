@@ -1,0 +1,41 @@
+# Servicio de App Engine Standard para el portal público — TEST/DEV.
+#
+# Proyecto GCP: subastemosdev (el mismo proyecto donde el backend despliega su
+# app-Dev.yaml, dominio testingapp.subastemos.mx). Ver DeployTest.bat.
+#
+# Mismo servicio `sitio-publico` que en producción, en un proyecto distinto:
+# App Engine aísla por proyecto, así que no hay riesgo de pisar producción.
+
+runtime: nodejs24
+service: sitio-publico
+instance_class: F1
+entrypoint: npm start
+
+automatic_scaling:
+  min_instances: 0
+  max_instances: 2
+  target_cpu_utilization: 0.7
+
+handlers:
+  - url: /.*
+    script: auto
+    secure: always
+
+env_variables:
+  # Sin dominio propio asignado todavía: se usa la URL que da App Engine por
+  # defecto para este servicio. Si se mapea un subdominio de test (al estilo
+  # testingapp.subastemos.mx del backend), actualiza este valor.
+  NEXT_PUBLIC_SITE_URL: "https://sitio-publico-dot-subastemosdev.uc.r.appspot.com"
+
+  # Clave de Google Maps JS API, restringida por referrer al dominio de arriba.
+  NEXT_PUBLIC_GOOGLE_MAPS_KEY: ""
+
+  # Provider de datos: "static" (data/*.ts) o "api" (backend).
+  DATA_PROVIDER: "static"
+
+  # URL base de los endpoints públicos del backend de DEV/TEST (mismo
+  # proyecto, servicio "default" del backend: testingapp.subastemos.mx).
+  BACKEND_API_URL: ""
+
+# BACKEND_API_KEY y REVALIDATE_TOKEN NO van aquí: se versiona en git.
+# Se inyectan desde Secret Manager del proyecto subastemosdev. Ver docs/DESPLIEGUE.md.

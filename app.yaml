@@ -1,0 +1,45 @@
+# Servicio de App Engine Standard para el portal público — PRODUCCIÓN.
+#
+# Proyecto GCP: subastas-dev (así se llama, pese al nombre, en la convención
+# de este equipo: es el mismo proyecto donde el backend despliega su app.yaml
+# de producción). Ver DeployProd.bat.
+#
+# Se declara `service` explícitamente desde el primer despliegue: si el sitio
+# sube como `default` y luego hay que reorganizar servicios, mover el tráfico
+# es bastante más molesto que nombrarlo bien de entrada. Es OTRO servicio del
+# mismo proyecto que el backend; este archivo no lo toca. Ver docs/BACKEND.md.
+
+runtime: nodejs24
+service: sitio-publico
+instance_class: F2
+entrypoint: npm start
+
+automatic_scaling:
+  min_instances: 0
+  max_instances: 4
+  target_cpu_utilization: 0.7
+
+handlers:
+  - url: /.*
+    script: auto
+    secure: always
+
+env_variables:
+  # Dominio canónico. Alimenta canonical, og:url, sitemap.xml y JSON-LD.
+  # Sin barra final.
+  NEXT_PUBLIC_SITE_URL: "https://www.subastemos.mx"
+
+  # Clave de Google Maps JS API, restringida por referrer a ese dominio.
+  # OJO: la clave que venía en el clon estático es pública y debe rotarse antes
+  # de publicar. Ver docs/DESPLIEGUE.md.
+  NEXT_PUBLIC_GOOGLE_MAPS_KEY: ""
+
+  # Provider de datos: "static" (data/*.ts) o "api" (backend).
+  DATA_PROVIDER: "static"
+
+  # URL base de los endpoints públicos del backend. Variable de servidor:
+  # sin prefijo NEXT_PUBLIC_, nunca llega al navegador.
+  BACKEND_API_URL: ""
+
+# BACKEND_API_KEY y REVALIDATE_TOKEN NO van aquí: app.yaml se versiona en git.
+# Se inyectan desde Secret Manager. Ver docs/DESPLIEGUE.md.

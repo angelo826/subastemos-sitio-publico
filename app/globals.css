@@ -1,0 +1,228 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SISTEMA DE DISEÑO — Subastemos
+   Tokens extraídos del tema original (css/app.css del clon estático).
+   Ver docs/DISENO.md para la tabla de equivalencias Bootstrap → Tailwind.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Paleta ──────────────────────────────────────────────────────────── */
+  --color-purple: #7300fe;
+  --color-darkpurple: #400186;
+  --color-orange: #ff7500;
+  --color-blue: #00a3e1;
+  --color-green: #04ae11;
+  --color-graybg: #f0f0f0;
+
+  /* ── Tipografía ──────────────────────────────────────────────────────── */
+  --font-regular: var(--font-regular), system-ui, sans-serif;
+  --font-bold: var(--font-bold), system-ui, sans-serif;
+  --font-title: var(--font-title), system-ui, sans-serif;
+
+  /* ── Breakpoints ─────────────────────────────────────────────────────────
+     Se usan los de Bootstrap 5, NO los de Tailwind, para que la traducción
+     del markup del clon sea 1:1 y no aparezcan saltos de layout donde el
+     original no los tenía.
+     Tailwind por defecto: 640 / 768 / 1024 / 1280 / 1536
+     Bootstrap 5:          576 / 768 /  992 / 1200 / 1400                    */
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-2xl: 1400px;
+
+  /* ── Altura del header fijo ──────────────────────────────────────────────
+     El tema original usaba `main { margin-top: 186px }` fijo, que en móvil
+     dejaba un hueco desproporcionado. Aquí es responsive (ver @layer base).  */
+  --spacing-header: 186px;
+  --spacing-header-sm: 157px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  /* El fondo y el recorte horizontal van en <html>, no en <body>.
+     Si <body> lleva overflow distinto de visible, su fondo deja de propagarse
+     al canvas y pasa a pintarse por encima de los elementos con z-index
+     negativo, que es lo que ocultaba la filigrana de números del tema. */
+  html {
+    -webkit-text-size-adjust: 100%;
+    background-color: #fff;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: var(--font-regular);
+    color: #212529;
+  }
+
+  /* El tema original quita el subrayado a los enlaces en todos sus estados. */
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* `.h1, h1` del tema: morado y con la tipografía de títulos. */
+  h1 {
+    color: var(--color-purple);
+    font-family: var(--font-title);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   COMPONENTES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* ── Contenedores ────────────────────────────────────────────────────────
+     Réplica exacta de .container / .container-fluid de Bootstrap 5, incluidos
+     los max-width por breakpoint y el padding de media canaleta (0.75rem).
+     Se define aquí una sola vez en lugar de repetir max-w-* en cada página.  */
+  .container-bs {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 0.75rem;
+  }
+  @media (min-width: 576px) {
+    .container-bs {
+      max-width: 540px;
+    }
+  }
+  @media (min-width: 768px) {
+    .container-bs {
+      max-width: 720px;
+    }
+  }
+  @media (min-width: 992px) {
+    .container-bs {
+      max-width: 960px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .container-bs {
+      max-width: 1140px;
+    }
+  }
+  @media (min-width: 1400px) {
+    .container-bs {
+      max-width: 1320px;
+    }
+  }
+
+  .container-fluid-bs {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 0.75rem;
+  }
+
+  /* ── Gradientes del tema ─────────────────────────────────────────────── */
+  .bg-grad-purple {
+    background: linear-gradient(90deg, #400186, #7300fe);
+  }
+  .bg-grad-purple-rev {
+    background: linear-gradient(90deg, #7300fe, #400186);
+  }
+  .bg-grad-orange {
+    background: linear-gradient(90deg, #400186, #ff7500);
+  }
+  .bg-grad-footer {
+    background: radial-gradient(circle at 106% 105%, #400186, #00a3e1 84%);
+  }
+  /* Hover de las tarjetas de patios. */
+  .bg-grad-patio-hover {
+    background: radial-gradient(
+      circle at 100% 100%,
+      rgba(255, 117, 0, 0.32),
+      #400186
+    );
+  }
+
+  /* Triángulo del banner de subastas (.subastas__banner--border). */
+  .clip-banner {
+    clip-path: polygon(0 0, 100% 100%, 100% 0);
+  }
+
+  /* ── Contenido editorial ─────────────────────────────────────────────────
+     Equivalente a `.redactorText` del tema. Se aplica a HTML que llega como
+     string desde data/, por eso se estiliza por descendencia y no con clases
+     utilitarias en el markup.                                               */
+  .redactor :is(h1, .h1) {
+    color: var(--color-purple);
+    font-family: var(--font-title);
+    padding-block: 1rem;
+    text-align: center;
+  }
+  .redactor :is(h2, .h2) {
+    color: var(--color-blue);
+    font-family: var(--font-title);
+    padding-block: 1rem;
+  }
+  .redactor strong {
+    color: var(--color-orange);
+  }
+  .redactor p {
+    padding-block: 0.5rem;
+  }
+  .redactor ol {
+    list-style-position: inside;
+  }
+  .redactor ol li {
+    padding-block: 0.5rem;
+  }
+  .redactor ol li::marker {
+    color: var(--color-purple);
+    font-family: var(--font-title);
+    font-size: 1.25rem;
+  }
+  .redactor ul {
+    list-style-type: square;
+    list-style-position: inside;
+  }
+  .redactor ul li {
+    padding-block: 0.5rem;
+  }
+  .redactor ul li::marker {
+    color: var(--color-blue);
+    font-size: 1.25rem;
+  }
+  .redactor img {
+    height: auto;
+    max-width: 100%;
+  }
+  .redactor a {
+    color: var(--color-blue);
+  }
+  .redactor a:hover {
+    text-decoration: underline;
+  }
+
+  /* Variante de /nosotros: cuerpo más grande y `strong` en negro. */
+  .redactor--nosotros {
+    font-size: 1.25rem;
+  }
+  .redactor--nosotros :is(h1, .h1) {
+    padding-block: 2rem;
+  }
+  .redactor--nosotros strong {
+    color: #000;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   UTILIDADES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@utility text-title {
+  font-family: var(--font-title);
+}
+
+@utility text-bold {
+  font-family: var(--font-bold);
+}
+
+@utility text-regular {
+  font-family: var(--font-regular);
+}

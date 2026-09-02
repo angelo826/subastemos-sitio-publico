@@ -1,0 +1,43 @@
+{
+  "name": "subastemos-sitio-publico",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portal público de Subastemos — Next.js App Router",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "datos": "node scripts/extraer-posts.mjs && node scripts/extraer-paginas.mjs && node scripts/dimensiones.mjs --ts",
+    "deploy:test": ".\\DeployTest.bat",
+    "deploy:prod": ".\\DeployProd.bat"
+  },
+  "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.11",
+    "@radix-ui/react-dropdown-menu": "^2.1.15",
+    "@radix-ui/react-tabs": "^1.1.12",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.544.0",
+    "next": "^16.3.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "swiper": "^14.2.0",
+    "tailwind-merge": "^3.3.1",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
+    "@types/google.maps": "^3.66.1",
+    "@types/node": "^24.5.2",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "eslint": "^9.36.0",
+    "eslint-config-next": "^16.3.4",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5.9.2"
+  }
+}
