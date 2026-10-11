@@ -20,12 +20,13 @@ export const DIAS_SEMANA = [
 ] as const;
 
 /**
- * Rango de meses navegables. Se mantiene el mismo del clon para que las URLs
- * que ya existían sigan resolviendo.
+ * Rango de meses navegables. Empieza donde empezaba el clon para que las URLs
+ * que ya existían sigan resolviendo; el final se amplía a mano (ver
+ * docs/CONTENIDO.md).
  */
 export const RANGO = {
   desde: { anio: 2026, mes: 3 },
-  hasta: { anio: 2026, mes: 10 },
+  hasta: { anio: 2027, mes: 12 },
 } as const;
 
 export interface Celda {
@@ -70,6 +71,22 @@ export function mesesDelRango(): { anio: number; mes: number }[] {
     salida.push({ anio: Math.floor(i / 12), mes: (i % 12) + 1 });
   }
   return salida;
+}
+
+/**
+ * Mes con el que abre /calendario: el de la próxima subasta, o el primero del
+ * rango si no hay ninguna. Sale de los datos y no del reloj, así que la página
+ * sigue siendo determinista en el build.
+ */
+export function mesInicial(): { anio: number; mes: number } {
+  const proxima = SUBASTAS.filter((s) => s.estado === "proxima")
+    .map((s) => s.fechaIso)
+    .sort()[0];
+  if (proxima) {
+    const [anio, mes] = proxima.split("-").map(Number);
+    if (dentroDeRango(anio, mes)) return { anio, mes };
+  }
+  return RANGO.desde;
 }
 
 export function rutaMes(anio: number, mes: number): string {

@@ -1,9 +1,10 @@
 import { ENLACES_EXTERNOS } from "./site";
+import { SUBASTAS_PROXIMAS } from "./subastas";
 
 /**
  * Estructura de navegación del portal.
- * Fuente: el <header> y el <footer> del clon estático, que son byte-idénticos
- * en las 33 páginas (verificado por md5), por eso viven en el layout raíz.
+ * El pie sigue el <footer> del clon estático; la cabecera se rediseñó en
+ * oct-2026 a partir del layout que envió el cliente.
  */
 
 export interface EnlaceNav {
@@ -11,88 +12,78 @@ export interface EnlaceNav {
   href: string;
   /** true para enlaces que salen del sitio (se abren en pestaña nueva). */
   externo?: boolean;
+  /** Texto secundario bajo el rótulo, p. ej. la sede de una subasta. */
+  detalle?: string;
 }
 
 export interface GrupoNav {
   label: string;
-  /** Si el grupo en sí es clicable además de desplegar. */
-  href?: string;
-  externo?: boolean;
   items: EnlaceNav[];
 }
 
-/** Barra superior, visible solo en desktop (md+). */
-export const NAV_SUPERIOR: EnlaceNav[] = [
-  { label: "Blog", href: "/blog" },
-  { label: "Calendario", href: "/calendario" },
-  { label: "Preguntas Frecuentes", href: "/preguntas-frecuentes" },
-  { label: "Reserva tu visita", href: "/reservas" },
+const MESES_CORTOS = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+
+/** "2026-10-20" → "20 oct 2026". */
+function fechaCorta(iso: string): string {
+  const [anio, mes, dia] = iso.split("-").map(Number);
+  return `${dia} ${MESES_CORTOS[mes - 1]} ${anio}`;
+}
+
+/**
+ * Desplegable «Próximas subastas»: una entrada por fecha, que lleva a la
+ * plataforma donde se participa (pedido del cliente, oct-2026). El calendario
+ * va aparte, en su propio enlace, porque puede reunir otros tipos de subasta.
+ */
+const PROXIMAS: EnlaceNav[] = [
+  ...[...SUBASTAS_PROXIMAS]
+    .sort((a, b) => a.fechaIso.localeCompare(b.fechaIso))
+    .map((s) => ({
+      label: fechaCorta(s.fechaIso),
+      detalle: s.sedes.length > 0 ? `${s.titulo} · ${s.sedes.join(" y ")}` : s.titulo,
+      href: s.acciones.find((a) => a.externo)?.href ?? ENLACES_EXTERNOS.subastas,
+      externo: true,
+    })),
+  { label: "Ver todas las subastas", href: ENLACES_EXTERNOS.subastas, externo: true },
 ];
 
-/** Navegación principal de desktop, con sus desplegables. */
+/**
+ * Navegación principal, la misma en desktop y en móvil.
+ *
+ * Rediseño 2026: el cliente pidió que lo primero fuera quién es Subastemos y
+ * no el blog o el calendario, así que desaparece la barra superior del tema
+ * original y el blog y las FAQ pasan al grupo «Nosotros».
+ */
 export const NAV_PRINCIPAL: (EnlaceNav | GrupoNav)[] = [
   {
-    label: "Compra y venta",
+    label: "Comprar",
     items: [
       { label: "¿Cómo comprar?", href: "/como-comprar" },
-      { label: "¿Cómo vender?", href: "/como-vender" },
+      { label: "Tipos de subastas", href: "/tipos-de-subastas" },
+      { label: "Subastas de bienes raíces", href: "/subastas-bienes-raices" },
       { label: "Métodos de pago", href: "/metodos-de-pago" },
     ],
   },
-  {
-    label: "Tipos de subastas",
-    items: [
-      { label: "Modalidades de subastas", href: "/tipos-de-subastas" },
-      { label: "Subastas Bienes Raíces", href: "/subastas-bienes-raices" },
-    ],
-  },
+  { label: "Vender", href: "/como-vender" },
+  { label: "Marcas", href: "/#marcas" },
+  { label: "Próximas subastas", items: PROXIMAS },
+  { label: "Calendario", href: "/calendario" },
   {
     label: "Patios",
     items: [
       { label: "Querétaro", href: "/patios/queretaro" },
       { label: "Ciudad de México", href: "/patios/ciudad-de-mexico" },
+      { label: "Reserva tu visita", href: "/reservas" },
     ],
   },
   {
-    label: "Subastas",
-    href: ENLACES_EXTERNOS.subastas,
-    externo: true,
+    label: "Nosotros",
     items: [
-      { label: "Ver subastas", href: ENLACES_EXTERNOS.subastas, externo: true },
-      { label: "Calendario", href: "/calendario" },
+      { label: "Quiénes somos", href: "/nosotros" },
+      { label: "Blog", href: "/blog" },
+      { label: "Preguntas frecuentes", href: "/preguntas-frecuentes" },
+      { label: "Contacto", href: "/contacto" },
     ],
   },
-  { label: "Nosotros", href: "/nosotros" },
-  { label: "Contacto", href: "/contacto" },
-];
-
-/**
- * Menú móvil. No es un reflejo del de desktop: el clon lo tenía con su propia
- * estructura y agrupaciones distintas, y se replica tal cual.
- */
-export const NAV_MOVIL: (EnlaceNav | GrupoNav)[] = [
-  {
-    label: "Compra y venta",
-    items: [
-      { label: "¿Cómo comprar?", href: "/como-comprar" },
-      { label: "¿Cómo vender?", href: "/como-vender" },
-      { label: "Métodos de pago", href: "/metodos-de-pago" },
-    ],
-  },
-  { label: "Tipos de subastas", href: "/tipos-de-subastas" },
-  {
-    label: "Subastas",
-    items: [
-      { label: "Querétaro", href: "/patios/queretaro" },
-      { label: "Ciudad de México", href: "/patios/ciudad-de-mexico" },
-      { label: "Calendario", href: "/calendario" },
-      { label: "Métodos de pago", href: "/metodos-de-pago" },
-    ],
-  },
-  { label: "Nosotros", href: "/nosotros" },
-  { label: "Blog", href: "/blog" },
-  { label: "Preguntas Frecuentes", href: "/preguntas-frecuentes" },
-  { label: "Contacto", href: "/contacto" },
 ];
 
 export interface ColumnaFooter {

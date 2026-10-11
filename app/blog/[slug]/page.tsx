@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation";
-import { Clock, Tag } from "lucide-react";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { CalendarDays } from "lucide-react";
 import { RedactorText } from "@/components/ui/RedactorText";
-import { HeaderImage } from "@/components/sections/HeaderImage";
+import { EncabezadoPagina } from "@/components/sections/EncabezadoPagina";
 import { BlogSidebar } from "@/components/sections/BlogSidebar";
 import { BlogCard } from "@/components/sections/BlogCard";
 import { JsonLd } from "@/components/JsonLd";
@@ -54,56 +53,46 @@ export default async function Articulo({
 
   return (
     <>
-      <div className="container-bs py-12">
-        <Breadcrumbs
-          migas={[
-            { nombre: "Inicio", href: "/" },
-            { nombre: "Blog", href: "/blog" },
-            { nombre: post.titulo, href: path },
-          ]}
-        />
-
-        <HeaderImage titulo={post.titulo} imagen={post.imagenHero} />
-
-        <div className="pt-4">
-          <span className="inline-flex items-center text-darkpurple tracking-[4.5px]">
-            <Clock className="size-4" aria-hidden />
-            <time dateTime={post.fechaIso} className="text-bold px-2">
-              {post.fecha}
-            </time>
+      <EncabezadoPagina
+        titulo={post.titulo}
+        imagen={post.imagenHero}
+        migas={[
+          { nombre: "Inicio", href: "/" },
+          { nombre: "Blog", href: "/blog" },
+          { nombre: post.titulo, href: path },
+        ]}
+      >
+        <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-white/85">
+          <span className="inline-flex items-center gap-1.5">
+            <CalendarDays className="size-4" aria-hidden />
+            <time dateTime={post.fechaIso}>{post.fecha.replaceAll("/", " ")}</time>
           </span>
-
-          <span className="ms-12 inline-flex items-center text-purple">
-            <Tag className="size-4" aria-hidden />
-            <span className="ms-3 rounded-[20px] bg-graybg px-3 py-2">
-              {post.tag}
-            </span>
+          <span className="text-bold rounded-full bg-white/15 px-3 py-1 text-xs">
+            {post.tag}
           </span>
         </div>
+      </EncabezadoPagina>
 
-        <div className="flex flex-wrap pt-6">
-          <div className="w-full lg:w-2/3 lg:pe-6">
+      <div className="container-bs py-10 md:py-14">
+        <div className="grid gap-10 lg:grid-cols-3">
+          <div className="lg:col-span-2">
             <article>
               <RedactorText html={post.cuerpo} />
             </article>
 
             {relacionados.length > 0 && (
               <section className="pt-12">
-                <h2 className="text-title py-6 text-center text-2xl text-purple">
-                  Artículos relacionados
-                </h2>
-                <div className="flex flex-wrap">
+                <h2 className="titulo-seccion mb-6">Artículos relacionados</h2>
+                <div className="grid gap-6 md:grid-cols-2">
                   {relacionados.map((p) => (
-                    <div key={p.slug} className="w-full p-3 md:w-1/2">
-                      <BlogCard post={p} />
-                    </div>
+                    <BlogCard key={p.slug} post={p} />
                   ))}
                 </div>
               </section>
             )}
           </div>
 
-          <div className="w-full lg:w-1/3 lg:ps-6">
+          <div>
             <BlogSidebar populares={todos.slice(0, 3)} />
           </div>
         </div>

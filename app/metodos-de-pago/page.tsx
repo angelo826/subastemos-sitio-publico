@@ -1,4 +1,4 @@
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { EncabezadoPagina } from "@/components/sections/EncabezadoPagina";
 import { Acordeon } from "@/components/ui/Acordeon";
 import { CardsCta } from "@/components/sections/CardsCta";
 import { JsonLd } from "@/components/JsonLd";
@@ -22,19 +22,16 @@ export const revalidate = false;
 export default function MetodosDePago() {
   return (
     <>
-      <div className="container-bs">
-        <Breadcrumbs
-          migas={[
-            { nombre: "Inicio", href: "/" },
-            { nombre: NOMBRE, href: PATH },
-          ]}
-        />
+      <EncabezadoPagina
+        titulo={TITULO_PAGOS}
+        migas={[
+          { nombre: "Inicio", href: "/" },
+          { nombre: NOMBRE, href: PATH },
+        ]}
+      />
 
-        <h1 className="text-title py-2 text-center text-4xl text-purple">
-          {TITULO_PAGOS}
-        </h1>
-
-        <div className="py-2">
+      <div className="container-bs py-10 md:py-14">
+        <div className="max-w-4xl">
           <Acordeon
             variante="oscuro"
             items={METODOS_DE_PAGO.map((m, i) => ({
@@ -47,9 +44,7 @@ export default function MetodosDePago() {
         </div>
       </div>
 
-      <div className="container-bs py-12">
-        <CardsCta />
-      </div>
+      <CardsCta />
 
       <JsonLd
         data={grafo(

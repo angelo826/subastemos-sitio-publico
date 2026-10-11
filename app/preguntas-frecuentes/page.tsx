@@ -1,4 +1,4 @@
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { EncabezadoPagina } from "@/components/sections/EncabezadoPagina";
 import { FiltrosFaq } from "@/components/sections/FiltrosFaq";
 import { CardsCta } from "@/components/sections/CardsCta";
 import { JsonLd } from "@/components/JsonLd";
@@ -28,24 +28,21 @@ export default async function PreguntasFrecuentes() {
 
   return (
     <>
-      <div className="container-bs">
-        <Breadcrumbs
-          migas={[
-            { nombre: "Inicio", href: "/" },
-            { nombre: NOMBRE, href: PATH },
-          ]}
-        />
+      <EncabezadoPagina
+        titulo="Preguntas frecuentes"
+        migas={[
+          { nombre: "Inicio", href: "/" },
+          { nombre: NOMBRE, href: PATH },
+        ]}
+      />
 
-        <h1 className="text-title py-2 text-center text-4xl text-purple">
-          Preguntas Frecuentes
-        </h1>
-
-        <FiltrosFaq categorias={categorias} faqs={faqs} />
+      <div className="container-bs py-10 md:py-14">
+        <div className="max-w-4xl">
+          <FiltrosFaq categorias={categorias} faqs={faqs} />
+        </div>
       </div>
 
-      <div className="container-bs py-12">
-        <CardsCta />
-      </div>
+      <CardsCta />
 
       <JsonLd
         data={grafo(

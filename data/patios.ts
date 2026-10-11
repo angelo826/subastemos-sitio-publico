@@ -33,7 +33,9 @@ export const PATIOS: Patio[] = [
     // El clon geocodificaba la dirección en cada carga; aquí las coordenadas
     // son fijas para no depender de una llamada extra a la API de Maps.
     coordenadas: { lat: 20.5369, lng: -100.4353 },
-    imagenHero: "/uploads/qro.webp",
+    // PROVISIONAL (oct-2026): el cliente pidió fotos de autos en lugar de la
+    // ciudad; foto de archivo hasta que envíe la del patio.
+    imagenHero: "/uploads/hero-image@3x.webp",
     imagenTarjeta: "/uploads/_rectangle/Qro-Subastemos.webp",
     telefono: "524462265588",
     whatsapp: WHATSAPP_URL,
@@ -51,7 +53,7 @@ export const PATIOS: Patio[] = [
     direccion:
       "Periférico Sur 2004, San Bartolo Chico, Alcaldía Tlalpan, Ciudad de México. CP. 14380",
     coordenadas: { lat: 19.2949, lng: -99.1861 },
-    imagenHero: "/uploads/qro.webp",
+    imagenHero: "/uploads/card-img-2.webp",
     imagenTarjeta: "/uploads/_rectangle/Cdmx-Subastemos.webp",
     telefono: "524462265588",
     whatsapp: WHATSAPP_URL,
@@ -69,31 +71,46 @@ export function patioPorSlug(slug: string): Patio | undefined {
 }
 
 /**
- * Retícula de patios del inicio. Incluye Puebla, que aparece en el clon como
- * sede anunciada pero sin página propia ni enlaces activos.
+ * Retícula de patios del inicio.
+ *
+ * Rediseño oct-2026: el cliente tiene cuatro patios y pidió fotos de autos en
+ * lugar de la ciudad. PROVISIONAL hasta que envíe la información y las fotos
+ * de cada patio: las imágenes son de archivo y los dos patios sin página se
+ * muestran como «Próximamente».
  */
 export interface TarjetaPatio {
   nombre: string;
   imagen: string;
+  /** Línea corta bajo el nombre. */
+  detalle: string;
   href?: string;
-  /** Puebla se muestra sin enlaces: solo el rótulo. */
+  /** Patio anunciado sin página propia todavía. */
   proximamente?: boolean;
 }
 
 export const TARJETAS_PATIO: TarjetaPatio[] = [
   {
-    nombre: "Puebla",
-    imagen: "/uploads/_rectangle/Puebla-Subastemos.webp",
-    proximamente: true,
+    nombre: "Querétaro",
+    imagen: "/uploads/hero-image@3x.webp",
+    detalle: "Patio Premium · El Pueblito",
+    href: "/patios/queretaro",
   },
   {
-    nombre: "CDMX",
-    imagen: "/uploads/_rectangle/Cdmx-Subastemos.webp",
+    nombre: "Ciudad de México",
+    imagen: "/uploads/card-img-2.webp",
+    detalle: "Periférico Sur · Tlalpan",
     href: "/patios/ciudad-de-mexico",
   },
   {
-    nombre: "Querétaro",
-    imagen: "/uploads/_rectangle/Qro-Subastemos.webp",
-    href: "/patios/queretaro",
+    nombre: "Monterrey",
+    imagen: "/uploads/card-img-1.webp",
+    detalle: "Información próximamente",
+    proximamente: true,
+  },
+  {
+    nombre: "Puebla",
+    imagen: "/uploads/resumen-borroso-aparcamiento-coches.jpg",
+    detalle: "Información próximamente",
+    proximamente: true,
   },
 ];

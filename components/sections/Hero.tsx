@@ -1,66 +1,95 @@
+import Link from "next/link";
+import { ArrowRight, CalendarDays } from "lucide-react";
 import { Foto } from "@/components/Foto";
+import { MARCAS } from "@/data/marcas";
+import { ENLACES_EXTERNOS } from "@/data/site";
+import { SUBASTAS_PROXIMAS } from "@/data/subastas";
 
 /**
- * Bloque principal del inicio: titular a la izquierda y mosaico de tres fotos
- * a la derecha. Fuente: `<section class="hero">` de index.html.
+ * Bloque principal del inicio.
  *
- * El párrafo aparece dos veces en el clon (una versión para desktop y otra
- * para móvil, alternadas con d-none/d-block). Aquí se escribe una sola vez y
- * se reordena con flexbox, para no duplicar contenido en el DOM ni ante los
- * rastreadores.
+ * Rediseño oct-2026 a partir del layout del cliente («Oportunidades que te
+ * mueven»). Lo primero que se lee es quién es Subastemos: una plataforma de
+ * subastas digital y segura. Debajo, el acceso directo a la próxima subasta.
+ *
+ * La foto es de archivo hasta que el cliente entregue la definitiva.
  */
 export function Hero() {
+  const proxima = [...SUBASTAS_PROXIMAS].sort((a, b) =>
+    a.fechaIso.localeCompare(b.fechaIso),
+  )[0];
+
   return (
-    <section className="container-bs">
-      <div className="flex flex-wrap">
-        <div className="flex w-full pe-0 lg:w-1/2 lg:pe-12">
-          <div className="ps-2 pt-2 md:ps-6 md:py-12">
-            <h1 className="text-title py-2 pe-0 text-purple text-[clamp(2.75rem,14vw,3.5rem)] leading-tight 2xl:text-[4rem] lg:pe-12">
-              La mejor experiencia de subasta en México.
-            </h1>
+    <section className="bg-grad-marca relative isolate overflow-hidden text-white">
+      <Foto
+        src="/uploads/hero-image@3x.webp"
+        alt=""
+        aria-hidden
+        priority
+        sizes="100vw"
+        className="absolute inset-0 -z-10 size-full object-cover object-[70%_center] opacity-45 lg:opacity-75"
+      />
+      {/* Funde la foto con el morado para que el texto siempre contraste. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-[#2b0160] via-[#2b0160]/85 to-transparent lg:via-[#2b0160]/70"
+      />
 
-            <p className="hidden py-2 md:block">
-              Compra o vende a través de métodos innovadores y confiables, con
-              garantía de pago de tus bienes en 5 días hábiles.
-            </p>
+      <div className="container-bs py-16 md:py-24 lg:py-28">
+        <div className="max-w-2xl">
+          <p className="text-bold text-xs tracking-[0.25em] text-white/80 uppercase">
+            La plataforma de subastas digitales de
+          </p>
+          <p className="text-title mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-lg text-white md:text-xl">
+            {MARCAS.map((m, i) => (
+              <span key={m} className="flex items-center gap-3">
+                {i > 0 && <span aria-hidden className="hidden h-4 w-px bg-white/40 sm:block" />}
+                {m}
+              </span>
+            ))}
+          </p>
+
+          <h1 className="text-title mt-6 text-[clamp(2.6rem,7vw,4.5rem)] leading-[1.02] text-white">
+            Oportunidades <span className="block text-orange">que te mueven.</span>
+          </h1>
+
+          <p className="mt-6 max-w-xl text-lg text-white/90 md:text-xl">
+            Compra o vende vehículos en subastas 100 % digitales: seguras,
+            transparentes y con pago de tus bienes garantizado en 5 días hábiles.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href={ENLACES_EXTERNOS.subastas}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary"
+            >
+              Explorar subastas
+              <ArrowRight className="size-4" aria-hidden />
+            </a>
+            <Link href="/como-vender" className="btn btn-ghost">
+              Vender mi inventario
+            </Link>
           </div>
-        </div>
 
-        <div className="w-full lg:w-1/2">
-          <div className="container-bs py-0 lg:py-12">
-            <div className="flex flex-wrap py-2">
-              <div className="w-1/2 px-1">
-                <Foto
-                  src="/uploads/heroimg-111.jpg"
-                  alt="Sala de subastas de Subastemos"
-                  priority
-                  sizes="(max-width: 992px) 50vw, 25vw"
-                  className="h-full w-full rounded-[15px] object-cover"
-                />
-              </div>
-
-              <div className="flex w-1/2 flex-col px-1">
-                <Foto
-                  src="/uploads/heroimg-22.jpg"
-                  alt="Registro de asistentes a una subasta"
-                  priority
-                  sizes="(max-width: 992px) 50vw, 25vw"
-                  className="h-1/2 w-full rounded-[15px] object-cover pb-1"
-                />
-                <Foto
-                  src="/uploads/home-img33.jpg"
-                  alt="Vehículo en exhibición previo a la subasta"
-                  sizes="(max-width: 992px) 50vw, 25vw"
-                  className="h-1/2 w-full rounded-[15px] object-cover pt-1"
-                />
-              </div>
-            </div>
-
-            <p className="py-4 md:hidden">
-              Compra o vende a través de métodos innovadores y confiables, con
-              garantía de pago de tus bienes en 5 días hábiles.
-            </p>
-          </div>
+          {proxima && (
+            <a
+              href={proxima.acciones.find((a) => a.externo)?.href ?? ENLACES_EXTERNOS.subastas}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-10 inline-flex items-center gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur transition-colors hover:bg-white/20"
+            >
+              <CalendarDays className="size-5 text-orange" aria-hidden />
+              <span>
+                <span className="block text-xs text-white/75">Próxima subasta</span>
+                <time dateTime={proxima.fechaIso} className="text-bold">
+                  {proxima.fecha}
+                </time>
+              </span>
+              <ArrowRight className="size-4" aria-hidden />
+            </a>
+          )}
         </div>
       </div>
     </section>

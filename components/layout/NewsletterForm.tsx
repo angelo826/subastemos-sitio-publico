@@ -37,7 +37,7 @@ export function NewsletterForm() {
 
   return (
     <form onSubmit={enviar}>
-      <div className="flex">
+      <div className="flex max-w-xs overflow-hidden rounded-full bg-white">
         <label htmlFor="newsletter-email" className="sr-only">
           Correo electrónico
         </label>
@@ -48,13 +48,13 @@ export function NewsletterForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Correo electrónico"
-          className="w-[170px] bg-white ps-4 text-darkpurple placeholder:text-sm"
+          className="min-w-0 flex-1 bg-white ps-4 text-darkpurple placeholder:text-sm focus:outline-none"
         />
         <button
           type="submit"
           disabled={estado === "enviando"}
           aria-label="Suscribirme"
-          className="grid size-11 place-items-center bg-orange px-3 py-2 text-white disabled:opacity-60"
+          className="grid size-11 shrink-0 place-items-center rounded-full bg-orange text-white hover:bg-[#e86a00] disabled:opacity-60"
         >
           <ChevronRight className="size-4" aria-hidden />
         </button>

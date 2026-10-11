@@ -1,12 +1,14 @@
 import { Hero } from "@/components/sections/Hero";
-import { NavTabs } from "@/components/sections/NavTabs";
-import { SeccionSubastas } from "@/components/sections/SeccionSubastas";
-import { ArticuloDestacado } from "@/components/sections/ArticuloDestacado";
+import { AccesosCompraVenta } from "@/components/sections/AccesosCompraVenta";
+import { ProximasSubastas } from "@/components/sections/ProximasSubastas";
+import { Beneficios } from "@/components/sections/Beneficios";
+import { BannerMarcas } from "@/components/sections/BannerMarcas";
+import { ComoFunciona } from "@/components/sections/ComoFunciona";
 import { PatiosGrid } from "@/components/sections/PatiosGrid";
+import { BannerInventario } from "@/components/sections/BannerInventario";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo";
 import { grafo, webSite } from "@/lib/jsonld";
-import { POSTS } from "@/data/posts";
 import { SITE } from "@/data/site";
 
 const TITULO = "La mejor experiencia de subasta en México";
@@ -23,19 +25,22 @@ export const metadata = buildMetadata({
 export const dynamic = "force-static";
 export const revalidate = false;
 
+/**
+ * Inicio. Rediseño oct-2026 a partir del layout que envió el cliente: primero
+ * quién es Subastemos, luego las dos puertas (comprar y vender), las próximas
+ * subastas y los patios.
+ */
 export default function Home() {
-  // El clon destacaba «Las marcas chinas de autos en México», que es el
-  // segundo artículo por fecha. Se toma por posición para que el destacado
-  // se mueva solo al publicar contenido nuevo.
-  const destacado = POSTS[1] ?? POSTS[0];
-
   return (
     <>
       <Hero />
-      <NavTabs />
-      <SeccionSubastas />
-      {destacado && <ArticuloDestacado post={destacado} />}
+      <AccesosCompraVenta />
+      <ProximasSubastas />
+      <Beneficios />
+      <BannerMarcas />
+      <ComoFunciona />
       <PatiosGrid />
+      <BannerInventario />
 
       <JsonLd
         data={grafo(

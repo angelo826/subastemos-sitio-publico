@@ -1,64 +1,54 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Foto } from "@/components/Foto";
+import { ENLACES_EXTERNOS } from "@/data/site";
 import type { Post } from "@/data/posts";
 
 /**
- * Barra lateral del blog: artículos populares y la tarjeta de llamada a la
- * acción con textura. Fuente: `.blog__articulosPopulares` y
- * `.blog__cardComponent` del tema.
+ * Barra lateral del blog: artículos populares y una llamada a participar en
+ * las subastas.
  */
 export function BlogSidebar({ populares }: { populares: Post[] }) {
   return (
-    <>
-      <aside className="rounded-[15px] bg-graybg">
-        <h2 className="text-title px-6 pt-12 pb-2 text-center text-2xl text-purple">
-          Artículos más populares
-        </h2>
+    <div className="flex flex-col gap-6 lg:sticky lg:top-[calc(var(--spacing-header)+1.5rem)]">
+      <aside className="rounded-3xl bg-lavender p-6">
+        <h2 className="titulo-seccion text-xl">Artículos más populares</h2>
 
-        <div className="px-6 py-6">
+        <ul className="mt-5 flex flex-col gap-4">
           {populares.map((p) => (
-            <div key={p.slug} className="flex items-center pb-6">
-              <Foto
-                src={p.imagenSquare}
-                alt=""
-                aria-hidden
-                sizes="100px"
-                className="size-[100px] shrink-0 rounded-[20px] object-cover"
-              />
-              <Link
-                href={`/blog/${p.slug}`}
-                className="text-title my-auto ps-4 text-[1.1rem] text-purple"
-              >
-                {p.titulo}
+            <li key={p.slug}>
+              <Link href={`/blog/${p.slug}`} className="group flex items-center gap-4">
+                <Foto
+                  src={p.imagenSquare}
+                  alt=""
+                  aria-hidden
+                  sizes="80px"
+                  className="size-20 shrink-0 rounded-2xl object-cover"
+                />
+                <span className="text-title leading-snug text-darkpurple group-hover:text-purple">
+                  {p.titulo}
+                </span>
               </Link>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </aside>
 
-      <section
-        className="my-12 rounded-[10px] bg-cover bg-no-repeat"
-        style={{ backgroundImage: "url(/uploads/textura-subastemos-20.svg)" }}
-      >
-        <div className="px-6 py-12 text-center text-white lg:px-8">
-          <h2 className="text-title text-2xl">Compra en Subastemos</h2>
-          <p className="py-4">Puja en nuestras subastas virtuales</p>
-          <div>
-            <Link
-              href="/patios/queretaro"
-              className="text-bold m-3 inline-block border border-white px-4 py-2 text-white hover:bg-white hover:text-darkpurple"
-            >
-              QRO
-            </Link>
-            <Link
-              href="/patios/ciudad-de-mexico"
-              className="text-bold m-3 inline-block border border-white px-4 py-2 text-white hover:bg-white hover:text-darkpurple"
-            >
-              CDMX
-            </Link>
-          </div>
-        </div>
+      <section className="bg-grad-marca rounded-3xl p-6 text-white">
+        <h2 className="text-title text-2xl">Compra en Subastemos</h2>
+        <p className="mt-2 text-white/90">
+          Participa en nuestras subastas 100 % digitales.
+        </p>
+        <a
+          href={ENLACES_EXTERNOS.subastas}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-primary btn-sm mt-5"
+        >
+          Ver subastas
+          <ArrowRight className="size-4" aria-hidden />
+        </a>
       </section>
-    </>
+    </div>
   );
 }

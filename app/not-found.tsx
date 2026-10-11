@@ -6,7 +6,7 @@ import Link from "next/link";
  */
 export default function NoEncontrada() {
   return (
-    <div className="bg-darkpurple">
+    <div className="bg-grad-marca">
       <div className="container-bs grid min-h-[60vh] place-items-center py-24 text-center">
         <div>
           <p className="text-title leading-none text-white text-[clamp(5rem,20vw,10rem)]">
@@ -17,7 +17,7 @@ export default function NoEncontrada() {
           </h1>
           <Link
             href="/"
-            className="text-bold mt-4 inline-block border-2 border-white px-6 py-3 text-white hover:bg-white hover:text-darkpurple"
+            className="btn btn-primary mt-4"
           >
             Volver al inicio
           </Link>

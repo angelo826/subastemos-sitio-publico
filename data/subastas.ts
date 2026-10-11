@@ -1,3 +1,5 @@
+import { ENLACES_EXTERNOS } from "./site";
+
 /**
  * Subastas mostradas en el carrusel del inicio y de las páginas de patio.
  *
@@ -13,7 +15,10 @@ export interface Subasta {
   fecha: string;
   /** La misma fecha en ISO, para ordenar y para <time>. */
   fechaIso: string;
-  /** Sedes donde se celebra. El tema las une con "y". */
+  /**
+   * Sedes donde se celebra. El tema las une con "y". Vacío para subastas
+   * 100 % en línea, sin sede asociada.
+   */
   sedes: string[];
   /** Imagen de fondo del slide. */
   imagen: string;
@@ -24,6 +29,19 @@ export interface Subasta {
 }
 
 export const SUBASTAS: Subasta[] = [
+  // PROVISIONAL: fecha confirmada por el cliente en la llamada del 9-oct-2026.
+  // Faltan el título oficial, las sedes y el enlace directo a la subasta en la
+  // plataforma; mientras tanto se enlaza al listado de subastas.
+  {
+    id: "subasta-2026-10-20",
+    titulo: "Subasta en línea",
+    fecha: "20 octubre 2026",
+    fechaIso: "2026-10-20",
+    sedes: [],
+    imagen: "/uploads/hero-image@3x.webp",
+    acciones: [{ label: "Participar", href: ENLACES_EXTERNOS.subastas, externo: true }],
+    estado: "proxima",
+  },
   {
     id: "multimarca-2023-05-25",
     titulo: "Subasta Multimarca 25 de mayo 2023",

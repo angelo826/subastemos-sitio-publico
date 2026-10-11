@@ -12,7 +12,7 @@ import { NewsletterForm } from "./NewsletterForm";
  */
 export function SiteFooter() {
   return (
-    <footer className="bg-darkpurple">
+    <footer className="bg-[#2b0160]">
       <div className="container-bs text-white">
         <div className="flex flex-wrap py-4">
           {/* Reserva: en móvil va arriba del todo; en sm+ se mueve a la
@@ -21,7 +21,7 @@ export function SiteFooter() {
             <p>Agenda para conocer nuestros lotes antes de la subasta.</p>
             <Link
               href="/reservas"
-              className="text-bold mt-3 inline-block bg-orange px-4 py-2 text-darkpurple"
+              className="btn btn-primary btn-sm mt-3"
             >
               Reserva tu visita
             </Link>
@@ -68,7 +68,7 @@ export function SiteFooter() {
               </p>
               <Link
                 href="/reservas"
-                className="text-bold inline-block bg-orange px-4 py-1 text-darkpurple"
+                className="btn btn-primary btn-sm"
               >
                 Reserva tu visita
               </Link>
@@ -85,7 +85,7 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="bg-grad-footer text-center text-white">
+      <div className="border-t border-white/10 text-center text-sm text-white/70">
         <p className="m-0 py-3">
           <span className="px-2">© Subastemos 2026 por IPETIK SOLUTIONS</span>
           {" | "}

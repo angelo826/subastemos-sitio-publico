@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
-import { HeaderNumbers, FooterNumbers } from "@/components/layout/NumbersBand";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { JsonLd } from "@/components/JsonLd";
 import { grafo, localBusiness } from "@/lib/jsonld";
@@ -39,13 +38,11 @@ export default function RootLayout({
     <html lang={SITE.lang} className={fontVariables}>
       <body>
         <SiteHeader />
-        <HeaderNumbers />
 
         <main className="mt-(--spacing-header-sm) md:mt-(--spacing-header)">
           {children}
         </main>
 
-        <FooterNumbers />
         <SiteFooter />
         <WhatsAppButton />
 

@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import * as Accordion from "@radix-ui/react-accordion";
-import { X } from "lucide-react";
+import { ChevronDown, ExternalLink, X } from "lucide-react";
 import {
-  NAV_MOVIL,
+  NAV_PRINCIPAL,
   esGrupo,
   type EnlaceNav,
   type GrupoNav,
@@ -19,20 +19,13 @@ interface Props {
 }
 
 /**
- * Menú de navegación móvil.
- *
- * Panel a pantalla completa que entra deslizándose desde la izquierda, igual
- * que `.header__mobile-menu` del tema original (`right: 100%` → `right: 0` con
- * `transition .5s`).
- *
- * No es un espejo del menú de desktop: el clon lo tenía con sus propias
- * agrupaciones y se replican tal cual desde data/navigation.ts.
- *
- * Los desplegables usaban el collapse de Bootstrap; aquí son Radix Accordion.
+ * Menú de navegación móvil: panel a pantalla completa que entra desde la
+ * izquierda. Desde el rediseño de oct-2026 usa la misma navegación que el
+ * desktop (data/navigation.ts).
  */
 export function MobileMenu({ abierto, onCerrar }: Props) {
   // Bloquea el scroll del documento mientras el panel está abierto y permite
-  // cerrarlo con Escape, dos cosas que el menú original no hacía.
+  // cerrarlo con Escape.
   useEffect(() => {
     if (!abierto) return;
 
@@ -52,12 +45,9 @@ export function MobileMenu({ abierto, onCerrar }: Props) {
 
   return (
     <div
-      // El tema animaba `right` de 100% a 0. Aquí se usa `transform`, que da
-      // el mismo desplazamiento pero se compone en la GPU en lugar de forzar
-      // un reflujo en cada fotograma.
-      // El tema animaba `right` de 100% a 0. Aquí se anima `transform`, que se
-      // compone en la GPU en vez de forzar un reflujo en cada fotograma.
-      className={`bg-grad-purple-rev fixed inset-y-0 left-0 z-[100] h-full min-h-dvh w-full overflow-auto transition-transform duration-500 md:hidden ${
+      // Se anima `transform`, que se compone en la GPU en vez de forzar un
+      // reflujo en cada fotograma.
+      className={`fixed inset-0 z-[100] flex h-dvh w-full flex-col overflow-auto bg-white transition-transform duration-300 xl:hidden ${
         abierto ? "translate-x-0" : "pointer-events-none -translate-x-full"
       }`}
       // Se evita `inert`: React 19 lo serializa como cadena vacía en el HTML
@@ -65,60 +55,58 @@ export function MobileMenu({ abierto, onCerrar }: Props) {
       // `aria-hidden` más `pointer-events-none` dan el mismo aislamiento.
       aria-hidden={!abierto}
     >
-      {/* Accesos directos, a ancho completo y sin separación. */}
-      <div className="flex">
+      <div className="flex h-(--spacing-header-sm) shrink-0 items-center justify-between border-b border-lilac px-4">
+        <Image
+          src="/uploads/logo-color.svg"
+          alt="Subastemos"
+          width={214}
+          height={25}
+          className="h-auto w-[170px]"
+        />
+        <button
+          type="button"
+          onClick={onCerrar}
+          aria-label="Cerrar menú"
+          className="grid size-11 place-items-center rounded-full text-darkpurple hover:bg-lavender"
+        >
+          <X className="size-6" aria-hidden />
+        </button>
+      </div>
+
+      <nav aria-label="Principal" className="flex-1 px-2 py-4">
+        <Accordion.Root type="single" collapsible>
+          {NAV_PRINCIPAL.map((item) =>
+            esGrupo(item) ? (
+              <GrupoColapsable key={item.label} grupo={item} onCerrar={onCerrar} />
+            ) : (
+              <EnlaceMovil
+                key={item.label}
+                enlace={item}
+                onCerrar={onCerrar}
+                className="text-title block rounded-xl px-4 py-3 text-xl text-darkpurple"
+              />
+            ),
+          )}
+        </Accordion.Root>
+      </nav>
+
+      <div className="bg-grad-marca grid grid-cols-2 gap-3 p-4">
         <a
-          href={ENLACES_EXTERNOS.registroContacto}
+          href={ENLACES_EXTERNOS.login}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-grad-purple text-bold flex w-1/2 justify-center py-4 text-center text-white"
+          className="btn btn-ghost"
+        >
+          Iniciar sesión
+        </a>
+        <a
+          href={ENLACES_EXTERNOS.registro}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-primary"
         >
           Regístrate
         </a>
-        <Link
-          href="/reservas"
-          onClick={onCerrar}
-          className="bg-grad-orange text-bold flex w-1/2 justify-center py-4 text-center text-white"
-        >
-          Reserva tu visita
-        </Link>
-      </div>
-
-      <div className="mt-12 text-center">
-        <div className="flex w-full justify-center">
-          <Image
-            src="/assets/logo-subastemos.svg"
-            alt="Subastemos"
-            width={214}
-            height={50}
-            className="h-auto w-full max-w-[214px]"
-          />
-        </div>
-
-        <div className="text-end">
-          <button
-            type="button"
-            onClick={onCerrar}
-            aria-label="Cerrar menú"
-            className="grid size-12 place-items-center p-3 text-white"
-          >
-            <X className="size-[18px]" aria-hidden />
-          </button>
-        </div>
-
-        <nav className="py-2 text-start">
-          <Accordion.Root type="single" collapsible className="list-none p-0">
-            {NAV_MOVIL.map((item) =>
-              esGrupo(item) ? (
-                <GrupoColapsable key={item.label} grupo={item} onCerrar={onCerrar} />
-              ) : (
-                <div key={item.label} className="py-2">
-                  <EnlaceMovil enlace={item} onCerrar={onCerrar} />
-                </div>
-              ),
-            )}
-          </Accordion.Root>
-        </nav>
       </div>
     </div>
   );
@@ -132,39 +120,25 @@ function GrupoColapsable({
   onCerrar: () => void;
 }) {
   return (
-    <Accordion.Item value={grupo.label} className="py-2">
+    <Accordion.Item value={grupo.label}>
       <Accordion.Header>
-        <Accordion.Trigger className="group text-bold flex w-full items-center justify-between bg-transparent ps-4 pe-4 text-start text-2xl font-bold text-white data-[state=open]:bg-purple">
+        <Accordion.Trigger className="group text-title flex w-full items-center justify-between rounded-xl px-4 py-3 text-start text-xl text-darkpurple data-[state=open]:bg-lavender">
           {grupo.label}
-          <Image
-            src="/assets/arrow-down.svg"
-            alt=""
-            width={30}
-            height={30}
+          <ChevronDown
+            className="size-5 transition-transform group-data-[state=open]:rotate-180"
             aria-hidden
-            className="w-[30px] group-data-[state=open]:hidden"
-          />
-          <Image
-            src="/assets/arrow-up.svg"
-            alt=""
-            width={30}
-            height={30}
-            aria-hidden
-            className="hidden w-[30px] group-data-[state=open]:block"
           />
         </Accordion.Trigger>
       </Accordion.Header>
 
-      <Accordion.Content className="overflow-hidden">
+      <Accordion.Content className="overflow-hidden ps-4">
         {grupo.items.map((sub) => (
-          <Link
-            key={sub.label}
-            href={sub.href}
-            onClick={onCerrar}
-            className="block py-3 ps-4 text-start text-2xl font-normal text-white"
-          >
-            {sub.label}
-          </Link>
+          <EnlaceMovil
+            key={sub.label + sub.href}
+            enlace={sub}
+            onCerrar={onCerrar}
+            className="block rounded-xl px-4 py-2.5 text-lg text-darkpurple"
+          />
         ))}
       </Accordion.Content>
     </Accordion.Item>
@@ -174,17 +148,40 @@ function GrupoColapsable({
 function EnlaceMovil({
   enlace,
   onCerrar,
+  className,
 }: {
   enlace: EnlaceNav;
   onCerrar: () => void;
+  className: string;
 }) {
+  const contenido = (
+    <span className="flex items-center justify-between gap-3">
+      <span>
+        {enlace.label}
+        {enlace.detalle && (
+          <span className="block text-sm text-darkpurple/70">{enlace.detalle}</span>
+        )}
+      </span>
+      {enlace.externo && <ExternalLink className="size-4 opacity-50" aria-hidden />}
+    </span>
+  );
+
+  if (enlace.externo) {
+    return (
+      <a
+        href={enlace.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onCerrar}
+        className={className}
+      >
+        {contenido}
+      </a>
+    );
+  }
   return (
-    <Link
-      href={enlace.href}
-      onClick={onCerrar}
-      className="text-bold block ps-4 text-start text-2xl font-bold text-white"
-    >
-      {enlace.label}
+    <Link href={enlace.href} onClick={onCerrar} className={className}>
+      {contenido}
     </Link>
   );
 }

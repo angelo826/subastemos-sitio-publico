@@ -1,8 +1,9 @@
 import { CalendarMonth } from "@/components/sections/CalendarMonth";
+import { EncabezadoPagina } from "@/components/sections/EncabezadoPagina";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo";
 import { grafo, webSite } from "@/lib/jsonld";
-import { construirMes, RANGO } from "@/lib/calendario";
+import { construirMes, mesInicial } from "@/lib/calendario";
 
 const PATH = "/calendario";
 const TITULO = "Calendario";
@@ -21,18 +22,23 @@ export const dynamic = "force-static";
 export const revalidate = false;
 
 export default function Calendario() {
-  // El clon abría por el mes en curso del volcado. Aquí se entra por el primer
-  // mes del rango, que es determinista y no depende de cuándo se compile.
-  const mes = construirMes(RANGO.desde.anio, RANGO.desde.mes);
+  // El clon abría por el mes en curso del volcado. Aquí se entra por el mes
+  // de la próxima subasta, que sale de los datos y no del reloj del build.
+  const inicial = mesInicial();
+  const mes = construirMes(inicial.anio, inicial.mes);
 
   return (
     <>
-      <div className="container-bs py-6">
-        <h1 className="text-title py-4 text-4xl text-purple">
-          Calendario de Subastas
-        </h1>
-        <hr className="mb-6" />
+      <EncabezadoPagina
+        titulo="Calendario de subastas"
+        subtitulo="Consulta las fechas y entra a la subasta desde su día en el calendario."
+        migas={[
+          { nombre: "Inicio", href: "/" },
+          { nombre: "Calendario", href: PATH },
+        ]}
+      />
 
+      <div className="container-bs py-10 md:py-14">
         <CalendarMonth mes={mes} />
       </div>
 

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { EncabezadoPagina } from "@/components/sections/EncabezadoPagina";
 import { CalendarMonth } from "@/components/sections/CalendarMonth";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo";
@@ -60,20 +60,16 @@ export default async function MesCalendarioPagina({
 
   return (
     <>
-      <div className="container-bs py-6">
-        <Breadcrumbs
-          migas={[
-            { nombre: "Inicio", href: "/" },
-            { nombre: "Calendario", href: "/calendario" },
-            { nombre: mes.nombre, href: path },
-          ]}
-        />
+      <EncabezadoPagina
+        titulo="Calendario de subastas"
+        migas={[
+          { nombre: "Inicio", href: "/" },
+          { nombre: "Calendario", href: "/calendario" },
+          { nombre: mes.nombre, href: path },
+        ]}
+      />
 
-        <h1 className="text-title py-4 text-4xl text-purple">
-          Calendario de Subastas
-        </h1>
-        <hr className="mb-6" />
-
+      <div className="container-bs py-10 md:py-14">
         <CalendarMonth mes={mes} />
       </div>
 

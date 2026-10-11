@@ -28,7 +28,7 @@ export function CalendarMonth({ mes }: { mes: MesCalendario }) {
           {mes.anterior && (
             <Link
               href={rutaMes(mes.anterior.anio, mes.anterior.mes)}
-              className="inline-grid size-11 place-items-center rounded border border-darkpurple text-darkpurple"
+              className="inline-grid size-11 place-items-center rounded-full border border-lilac bg-white text-darkpurple hover:border-purple hover:text-purple"
             >
               <ArrowLeft className="size-4" aria-hidden />
               <span className="sr-only">
@@ -39,10 +39,10 @@ export function CalendarMonth({ mes }: { mes: MesCalendario }) {
         </div>
 
         <div className="text-center">
-          <h2 className="text-title text-2xl text-darkpurple">
-            <strong>{mes.nombre}</strong>
+          <h2 className="text-title text-2xl text-darkpurple first-letter:uppercase">
+            {mes.nombre}
           </h2>
-          <p className="pt-1">
+          <p className="pt-1 text-sm text-darkpurple/70">
             {mes.subastas.length === 0
               ? "0 subastas"
               : `${mes.subastas.length} ${mes.subastas.length === 1 ? "subasta" : "subastas"}`}
@@ -53,7 +53,7 @@ export function CalendarMonth({ mes }: { mes: MesCalendario }) {
           {mes.siguiente && (
             <Link
               href={rutaMes(mes.siguiente.anio, mes.siguiente.mes)}
-              className="inline-grid size-11 place-items-center rounded border border-darkpurple text-darkpurple"
+              className="inline-grid size-11 place-items-center rounded-full border border-lilac bg-white text-darkpurple hover:border-purple hover:text-purple"
             >
               <ArrowRight className="size-4" aria-hidden />
               <span className="sr-only">
@@ -64,8 +64,8 @@ export function CalendarMonth({ mes }: { mes: MesCalendario }) {
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[640px] border-collapse border border-gray-300">
+      <div className="overflow-x-auto rounded-3xl border border-lilac bg-white">
+        <table className="w-full min-w-[640px] border-collapse">
           <caption className="sr-only">
             Subastas de {mes.nombre}, por día
           </caption>
@@ -75,7 +75,7 @@ export function CalendarMonth({ mes }: { mes: MesCalendario }) {
                 <th
                   key={d}
                   scope="col"
-                  className="text-bold border border-gray-300 p-2 text-center"
+                  className="text-bold border-b border-lilac bg-lavender p-3 text-center text-sm text-darkpurple"
                 >
                   {d}
                 </th>
@@ -88,22 +88,36 @@ export function CalendarMonth({ mes }: { mes: MesCalendario }) {
                 {semana.map((celda) => (
                   <td
                     key={celda.iso}
-                    className={`h-24 border border-gray-300 p-2 align-top ${
-                      celda.fuera ? "bg-graybg text-gray-400" : ""
+                    className={`h-24 border-t border-l border-lilac p-2 align-top first:border-l-0 ${
+                      celda.fuera ? "bg-lavender/50 text-darkpurple/30" : "text-darkpurple"
                     }`}
                   >
                     <time dateTime={celda.iso} className="block text-sm">
                       {String(celda.dia).padStart(2, "0")}
                     </time>
 
-                    {celda.subastas.map((s) => (
-                      <p
-                        key={s.id}
-                        className="text-bold mt-1 rounded bg-purple px-1 py-0.5 text-xs text-white"
-                      >
-                        {s.titulo}
-                      </p>
-                    ))}
+                    {celda.subastas.map((s) => {
+                      const clase =
+                        "text-bold mt-1 block rounded-lg bg-darkpurple px-2 py-1 text-xs text-white";
+                      const enlace = s.acciones.find((a) => a.externo);
+                      // Las fechas enlazan a la subasta en la plataforma, que es
+                      // donde se participa (pedido del cliente, oct-2026).
+                      return enlace && s.estado === "proxima" ? (
+                        <a
+                          key={s.id}
+                          href={enlace.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`${clase} hover:bg-orange`}
+                        >
+                          {s.titulo}
+                        </a>
+                      ) : (
+                        <p key={s.id} className={clase}>
+                          {s.titulo}
+                        </p>
+                      );
+                    })}
                   </td>
                 ))}
               </tr>
@@ -121,14 +135,14 @@ export function CalendarMonth({ mes }: { mes: MesCalendario }) {
                 {actual ? (
                   <span
                     aria-current="page"
-                    className="text-bold block rounded border-2 border-purple bg-purple px-3 py-2 text-white"
+                    className="text-bold block rounded-full bg-darkpurple px-4 py-2 text-sm text-white first-letter:uppercase"
                   >
                     {MESES[m.mes - 1]} {m.anio}
                   </span>
                 ) : (
                   <Link
                     href={rutaMes(m.anio, m.mes)}
-                    className="block rounded border-2 border-purple px-3 py-2 text-darkpurple hover:bg-purple hover:text-white"
+                    className="block rounded-full border border-lilac bg-white px-4 py-2 text-sm text-darkpurple first-letter:uppercase hover:border-purple hover:text-purple"
                   >
                     {MESES[m.mes - 1]} {m.anio}
                   </Link>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HeaderImage } from "./HeaderImage";
+import { EncabezadoPagina } from "./EncabezadoPagina";
 import { BlogCard } from "./BlogCard";
 import { BlogSidebar } from "./BlogSidebar";
 import type { Post } from "@/data/posts";
@@ -24,41 +24,46 @@ export function BlogListado({
 }) {
   return (
     <>
-      <div className="container-bs py-12">
-        <HeaderImage titulo="Blog Subastemos" imagen="/uploads/hero-image@3x.webp" />
-      </div>
+      <EncabezadoPagina
+        titulo="Blog Subastemos"
+        subtitulo="Noticias y análisis del mercado automotriz y el mundo de las subastas."
+        imagen="/uploads/hero-image@3x.webp"
+        migas={[
+          { nombre: "Inicio", href: "/" },
+          { nombre: "Blog", href: "/blog" },
+        ]}
+      />
 
-      <div className="container-bs py-12">
-        <div className="flex flex-wrap px-4 sm:px-0">
-          <div className="w-full md:w-2/3 md:pe-6">
-            {posts.map((p) => (
-              <BlogCard key={p.slug} post={p} />
-            ))}
+      <div className="container-bs py-10 md:py-14">
+        <div className="grid gap-8 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <div className="grid gap-6 md:grid-cols-2">
+              {posts.map((p) => (
+                <BlogCard key={p.slug} post={p} />
+              ))}
+            </div>
 
             {totalPaginas > 1 && (
-              <nav aria-label="Paginación del blog" className="flex">
-                <ol className="text-bold mx-auto flex tracking-[4px]">
+              <nav aria-label="Paginación del blog" className="mt-10 flex justify-center">
+                <ol className="text-bold flex gap-2">
                   {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((n) => {
                     const actual = n === pagina;
-                    const etiqueta = String(n).padStart(2, "0");
                     const href = n === 1 ? "/blog" : `/blog/pagina/${n}`;
+                    const clase = "grid size-11 place-items-center rounded-full";
 
                     return (
-                      <li key={n} className="mx-2">
+                      <li key={n}>
                         {actual ? (
-                          <span
-                            aria-current="page"
-                            className="block rounded-[5px] bg-purple px-3 py-2 text-white"
-                          >
-                            {etiqueta}
+                          <span aria-current="page" className={`${clase} bg-darkpurple text-white`}>
+                            {n}
                             <span className="sr-only"> (página actual)</span>
                           </span>
                         ) : (
                           <Link
                             href={href}
-                            className="block rounded-[5px] bg-graybg px-3 py-2 text-darkpurple"
+                            className={`${clase} border border-lilac bg-white text-darkpurple hover:border-purple`}
                           >
-                            {etiqueta}
+                            {n}
                             <span className="sr-only"> Ir a la página {n}</span>
                           </Link>
                         )}
@@ -70,7 +75,7 @@ export function BlogListado({
             )}
           </div>
 
-          <div className="w-full lg:w-1/3 lg:ps-6">
+          <div>
             <BlogSidebar populares={populares} />
           </div>
         </div>

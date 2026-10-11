@@ -1,7 +1,7 @@
 "use client";
 
 import * as Accordion from "@radix-ui/react-accordion";
-import { Minus, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import Image from "next/image";
 
 export interface ItemAcordeon {
@@ -32,15 +32,19 @@ export function Acordeon({
   const oscuro = variante === "oscuro";
 
   return (
-    <Accordion.Root type="single" collapsible className="w-full">
+    <Accordion.Root type="single" collapsible className="flex w-full flex-col gap-3">
       {items.map((it) => (
-        <Accordion.Item key={it.id} value={it.id} className="py-3">
+        <Accordion.Item
+          key={it.id}
+          value={it.id}
+          className={`overflow-hidden rounded-2xl border ${
+            oscuro
+              ? "border-transparent bg-darkpurple text-white data-[state=open]:bg-grad-marca"
+              : "border-lilac bg-white data-[state=open]:bg-lavender"
+          }`}
+        >
           <Accordion.Header>
-            <Accordion.Trigger
-              className={`group flex w-full items-center rounded-[15px] p-4 text-start ${
-                oscuro ? "bg-darkpurple text-white" : "bg-graybg text-purple"
-              }`}
-            >
+            <Accordion.Trigger className="group flex w-full items-center gap-4 p-5 text-start">
               {it.icono && (
                 <Image
                   src={it.icono}
@@ -52,26 +56,23 @@ export function Acordeon({
                 />
               )}
 
-              <span className={`text-bold ${it.icono ? "px-4" : ""}`}>
+              <span className={`text-bold text-lg ${oscuro ? "" : "text-darkpurple"}`}>
                 {it.titulo}
               </span>
 
-              <span className="ms-auto ps-4">
-                <Plus
-                  className={`size-4 group-data-[state=open]:hidden ${oscuro ? "text-white" : "text-purple"}`}
-                  aria-hidden
-                />
-                <Minus
-                  className={`hidden size-4 group-data-[state=open]:block ${oscuro ? "text-white" : "text-purple"}`}
-                  aria-hidden
-                />
+              <span
+                className={`ms-auto grid size-8 shrink-0 place-items-center rounded-full transition-transform group-data-[state=open]:rotate-45 ${
+                  oscuro ? "bg-white/15 text-white" : "bg-lilac text-purple"
+                }`}
+              >
+                <Plus className="size-4" aria-hidden />
               </span>
             </Accordion.Trigger>
           </Accordion.Header>
 
-          <Accordion.Content className="overflow-hidden px-12">
+          <Accordion.Content className="overflow-hidden px-5 pb-4">
             <div
-              className="redactor py-2"
+              className={`redactor ${oscuro ? "redactor--oscuro" : ""}`}
               dangerouslySetInnerHTML={{ __html: it.contenido }}
             />
           </Accordion.Content>

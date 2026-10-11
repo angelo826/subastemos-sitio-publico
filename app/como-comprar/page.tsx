@@ -31,7 +31,8 @@ export default function ComoComprar() {
         cuerpo={PAGINA.cuerpo}
         antesDeCards={
           FAQS_COMO_COMPRAR.length > 0 && (
-            <div className="container-bs py-6">
+            <div className="container-bs pb-14">
+              <h2 className="titulo-seccion mb-6">Preguntas frecuentes</h2>
               <Acordeon
                 items={FAQS_COMO_COMPRAR.map((f, i) => ({
                   id: `pregunta-${i + 1}`,

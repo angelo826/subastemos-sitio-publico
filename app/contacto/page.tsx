@@ -1,4 +1,4 @@
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { EncabezadoPagina } from "@/components/sections/EncabezadoPagina";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { CardsCta } from "@/components/sections/CardsCta";
 import { GoogleMap } from "@/components/sections/GoogleMap";
@@ -26,27 +26,19 @@ export const revalidate = false;
 export default function Contacto() {
   return (
     <>
-      <div className="container-bs">
-        <Breadcrumbs
-          migas={[
-            { nombre: "Inicio", href: "/" },
-            { nombre: NOMBRE, href: PATH },
-          ]}
-        />
-
-        <h1 className="text-title py-2 text-center text-4xl text-purple">
-          Contáctanos
-        </h1>
-      </div>
+      <EncabezadoPagina
+        titulo="Contáctanos"
+        subtitulo="Escríbenos y resolvemos tus dudas sobre nuestras subastas."
+        migas={[
+          { nombre: "Inicio", href: "/" },
+          { nombre: NOMBRE, href: PATH },
+        ]}
+      />
 
       <ContactForm origen="contacto" />
 
-      <div className="container-bs py-6">
-        <CardsCta />
-      </div>
-
-      <div className="container-bs py-12">
-        <div className="h-[500px]">
+      <div className="container-bs pb-14">
+        <div className="h-[420px] overflow-hidden rounded-3xl">
           <GoogleMap
             lat={SITE.geo.lat}
             lng={SITE.geo.lng}
@@ -55,6 +47,8 @@ export default function Contacto() {
           />
         </div>
       </div>
+
+      <CardsCta />
 
       <JsonLd
         data={grafo(

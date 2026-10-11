@@ -20,7 +20,14 @@ export const revalidate = false;
 export default function PoliticaDePrivacidad() {
   return (
     <>
-      <PaginaEditorial cuerpo={PAGINA.cuerpo} conCards={false} />
+      <PaginaEditorial
+        migas={[
+          { nombre: "Inicio", href: "/" },
+          { nombre: "Aviso de privacidad", href: PATH },
+        ]}
+        cuerpo={PAGINA.cuerpo}
+        conCards={false}
+      />
 
       <JsonLd
         data={grafo(

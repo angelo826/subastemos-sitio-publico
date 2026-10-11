@@ -1,37 +1,34 @@
 import Link from "next/link";
+import { ArrowRight, MapPin } from "lucide-react";
 import { Foto } from "@/components/Foto";
-import { TARJETAS_PATIO } from "@/data/patios";
+import { TARJETAS_PATIO, type TarjetaPatio } from "@/data/patios";
 
 /**
- * Retícula «Nuestros patios» del inicio. Fuente: `<section class="patios">`.
+ * Retícula «Nuestros patios» del inicio.
  *
- * Dos correcciones deliberadas respecto al clon (ver docs/MIGRACION.md):
- *
- * 1. Los botones de cada tarjeta llevaban `d-none` y solo aparecían al pasar
- *    el ratón, lo que los dejaba inalcanzables por teclado y en móvil. Aquí la
- *    tarjeta entera es el enlace, así que funciona con teclado, toque y ratón,
- *    y el sobreimpreso sigue reaccionando al hover.
- * 2. El tema fijaba `height: 350px` por debajo de 992px. Aquí se usa
- *    aspect-ratio, que reserva la caja sin depender de una altura dura.
+ * Rediseño oct-2026: cuatro patios y fotos de autos en lugar de la ciudad,
+ * como pidió el cliente. La tarjeta entera es el enlace, así que funciona con
+ * teclado, toque y ratón (el clon escondía los botones hasta el hover).
  */
 export function PatiosGrid() {
   return (
-    <section className="my-12">
+    <section className="bg-lavender py-14">
       <div className="container-bs">
-        <div className="text-center">
-          <h2 className="text-title py-2 text-[2.5rem] text-purple">
-            Nuestros patios
-          </h2>
-          <p className="py-2 text-2xl">
-            Conoce, reserva tu visita y puja en nuestros patios.
-          </p>
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="titulo-seccion">Nuestros patios</h2>
+            <p className="mt-2 text-darkpurple/80">
+              Conoce las unidades antes de la subasta: agenda tu visita.
+            </p>
+          </div>
+          <Link href="/reservas" className="btn btn-outline btn-sm">
+            Reserva tu visita
+          </Link>
         </div>
 
-        <div className="flex flex-wrap">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {TARJETAS_PATIO.map((t) => (
-            <div key={t.nombre} className="w-full p-6 lg:w-1/3">
-              <Tarjeta tarjeta={t} />
-            </div>
+            <Tarjeta key={t.nombre} tarjeta={t} />
           ))}
         </div>
       </div>
@@ -39,43 +36,44 @@ export function PatiosGrid() {
   );
 }
 
-function Tarjeta({ tarjeta }: { tarjeta: (typeof TARJETAS_PATIO)[number] }) {
+function Tarjeta({ tarjeta }: { tarjeta: TarjetaPatio }) {
   const contenido = (
     <>
       <Foto
         src={tarjeta.imagen}
         alt=""
         aria-hidden
-        sizes="(max-width: 992px) 100vw, 33vw"
-        className="aspect-square w-full rounded-[40px] object-cover object-center lg:aspect-[300/540]"
+        sizes="(max-width: 576px) 100vw, (max-width: 992px) 50vw, 25vw"
+        className="aspect-[16/10] w-full object-cover sm:aspect-[4/5] transition-transform duration-500 group-hover:scale-105"
       />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#2b0160] via-[#2b0160]/30 to-transparent" />
 
-      <div className="group-hover:bg-grad-patio-hover absolute inset-0 size-full rounded-[40px] bg-black/20 transition-colors lg:bg-transparent">
-        <div className="absolute top-[75%] w-full text-center transition-all group-hover:top-[60%]">
-          <p className="text-title pb-4 text-[2.5rem] text-white lg:text-[2rem]">
-            {tarjeta.nombre}
-          </p>
-
-          {tarjeta.proximamente ? (
-            <span className="text-title hidden text-2xl text-white group-hover:block">
-              Proximamente
-            </span>
-          ) : (
-            <span className="text-bold mx-auto hidden w-3/4 border border-white px-4 py-2 text-white group-hover:block xl:w-1/2">
-              Ver subastas
-            </span>
-          )}
-        </div>
+      <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+        <p className="flex items-center gap-1.5 text-sm text-white/80">
+          <MapPin className="size-4" aria-hidden />
+          {tarjeta.detalle}
+        </p>
+        <p className="text-title text-2xl">{tarjeta.nombre}</p>
+        {tarjeta.proximamente ? (
+          <span className="text-bold mt-3 inline-block rounded-full bg-white/15 px-3 py-1 text-xs">
+            Próximamente
+          </span>
+        ) : (
+          <span className="text-bold mt-3 inline-flex items-center gap-1 text-sm text-orange">
+            Ver patio
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
+          </span>
+        )}
       </div>
     </>
   );
 
-  if (!tarjeta.href) {
-    return <div className="group relative block">{contenido}</div>;
-  }
+  const clase = "group relative block overflow-hidden rounded-3xl shadow-lg shadow-darkpurple/10";
+
+  if (!tarjeta.href) return <div className={clase}>{contenido}</div>;
 
   return (
-    <Link href={tarjeta.href} className="group relative block">
+    <Link href={tarjeta.href} className={clase}>
       {contenido}
     </Link>
   );

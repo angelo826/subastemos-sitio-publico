@@ -1,4 +1,5 @@
 import { SimplyBookWidget } from "@/components/sections/SimplyBookWidget";
+import { EncabezadoPagina } from "@/components/sections/EncabezadoPagina";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo";
 import { grafo, webSite } from "@/lib/jsonld";
@@ -21,11 +22,16 @@ export const revalidate = false;
 export default function Reservas() {
   return (
     <>
-      <div className="container-bs">
-        <h1 className="text-title py-6 text-center text-4xl text-purple">
-          {TITULO}
-        </h1>
+      <EncabezadoPagina
+        titulo={TITULO}
+        subtitulo="Agenda tu cita para conocer las unidades antes de la subasta."
+        migas={[
+          { nombre: "Inicio", href: "/" },
+          { nombre: "Reservas", href: PATH },
+        ]}
+      />
 
+      <div className="container-bs">
         <SimplyBookWidget />
       </div>
 

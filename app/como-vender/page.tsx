@@ -34,7 +34,8 @@ export default function ComoVender() {
         antesDeCards={
           <>
             {FAQS_COMO_VENDER.length > 0 && (
-              <div className="container-bs py-6">
+              <div className="container-bs pb-14">
+                <h2 className="titulo-seccion mb-6">Preguntas frecuentes</h2>
                 <Acordeon
                   items={FAQS_COMO_VENDER.map((f, i) => ({
                     id: `pregunta-${i + 1}`,

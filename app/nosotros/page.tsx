@@ -21,31 +21,15 @@ export const revalidate = false;
 export default function Nosotros() {
   return (
     <>
-      {/* Par de imágenes de cabecera, en proporción 9/3 como en el tema. */}
-      <div className="container-bs">
-        <div className="flex py-4">
-          <div className="w-3/4 px-1">
-            <Foto
-              src="/uploads/rectangle@3x.webp"
-              alt="Equipo de Subastemos durante una subasta"
-              priority
-              sizes="75vw"
-              className="h-full w-full rounded-[15px] object-cover"
-            />
-          </div>
-          <div className="w-1/4 px-1">
-            <Foto
-              src="/uploads/rectangle-copy-2@3x.webp"
-              alt="Detalle de una unidad en subasta"
-              priority
-              sizes="25vw"
-              className="h-full w-full rounded-[15px] object-cover"
-            />
-          </div>
-        </div>
-      </div>
-
-      <PaginaEditorial cuerpo={PAGINA.cuerpo} variante="nosotros" />
+      <PaginaEditorial
+        migas={[
+          { nombre: "Inicio", href: "/" },
+          { nombre: "Nosotros", href: PATH },
+        ]}
+        cuerpo={PAGINA.cuerpo}
+        variante="nosotros"
+        despuesDelTitulo={<FotosNosotros />}
+      />
 
       <JsonLd
         data={grafo(
@@ -57,5 +41,33 @@ export default function Nosotros() {
         )}
       />
     </>
+  );
+}
+
+/** Par de fotos bajo el encabezado, en proporción 3:1 como en el tema. */
+function FotosNosotros() {
+  return (
+    <div className="container-bs pt-10">
+      <div className="flex gap-3">
+        <div className="w-3/4">
+          <Foto
+            src="/uploads/rectangle@3x.webp"
+            alt="Equipo de Subastemos durante una subasta"
+            priority
+            sizes="75vw"
+            className="h-full w-full rounded-3xl object-cover"
+          />
+        </div>
+        <div className="w-1/4">
+          <Foto
+            src="/uploads/rectangle-copy-2@3x.webp"
+            alt="Detalle de una unidad en subasta"
+            priority
+            sizes="25vw"
+            className="h-full w-full rounded-3xl object-cover"
+          />
+        </div>
+      </div>
+    </div>
   );
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 
 export interface Miga {
   nombre: string;
@@ -6,28 +7,47 @@ export interface Miga {
 }
 
 /**
- * Migas de pan. Fuente: el `<nav aria-label="breadcrumb">` del tema.
- * El último elemento no es enlace: es la página actual.
+ * Migas de pan. El último elemento no es enlace: es la página actual.
+ * `tono="oscuro"` es para cuando van sobre una foto o un fondo de marca.
  */
-export function Breadcrumbs({ migas }: { migas: Miga[] }) {
+export function Breadcrumbs({
+  migas,
+  tono = "claro",
+}: {
+  migas: Miga[];
+  tono?: "claro" | "oscuro";
+}) {
+  const oscuro = tono === "oscuro";
+
   return (
-    <nav aria-label="Ruta de navegación" className="pb-3 pt-4 text-xl">
+    <nav aria-label="Ruta de navegación" className="text-sm">
       <ol className="flex flex-wrap items-center gap-y-1">
         {migas.map((m, i) => {
           const ultima = i === migas.length - 1;
           return (
             <li key={m.href} className="flex items-center">
               {i > 0 && (
-                <span className="text-bold px-2 text-purple" aria-hidden>
-                  /
-                </span>
+                <ChevronRight
+                  className={`mx-1.5 size-3.5 ${oscuro ? "text-white/50" : "text-darkpurple/40"}`}
+                  aria-hidden
+                />
               )}
               {ultima ? (
-                <span className="text-bold text-purple" aria-current="page">
+                <span
+                  className={`text-bold line-clamp-1 ${oscuro ? "text-white" : "text-darkpurple"}`}
+                  aria-current="page"
+                >
                   {m.nombre}
                 </span>
               ) : (
-                <Link href={m.href} className="text-blue hover:underline">
+                <Link
+                  href={m.href}
+                  className={
+                    oscuro
+                      ? "text-white/75 hover:text-white"
+                      : "text-darkpurple/70 hover:text-purple"
+                  }
+                >
                   {m.nombre}
                 </Link>
               )}

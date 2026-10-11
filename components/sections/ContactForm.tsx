@@ -42,9 +42,9 @@ export function ContactForm({ origen = "contacto" }: { origen?: string }) {
   }
 
   return (
-    <section className="my-12">
-      <div className="container-bs lg:px-12">
-        <form onSubmit={enviar} className="md:px-12" noValidate={false}>
+    <section className="container-bs py-10">
+      <div className="mx-auto max-w-3xl rounded-3xl border border-lilac bg-white p-6 shadow-lg shadow-darkpurple/5 md:p-10">
+        <form onSubmit={enviar} noValidate={false}>
           {/* Campo trampa: invisible para las personas, tentador para los bots. */}
           <div className="hidden" aria-hidden>
             <label htmlFor="honeypotField">No rellenar</label>
@@ -57,8 +57,8 @@ export function ContactForm({ origen = "contacto" }: { origen?: string }) {
             />
           </div>
 
-          <div className="px-4">
-            <div className="flex flex-wrap md:px-12">
+          <div>
+            <div className="-mx-2 flex flex-wrap">
               <Campo
                 className="w-full md:w-1/2"
                 id="fromName"
@@ -88,22 +88,22 @@ export function ContactForm({ origen = "contacto" }: { origen?: string }) {
                 type="text"
               />
 
-              <div className="w-full py-3 text-center">
+              <div className="flex w-full flex-wrap items-center justify-center gap-3 px-2 pt-4">
                 <button
                   type="submit"
                   disabled={estado === "enviando"}
-                  className="text-bold bg-orange px-4 py-2 text-darkpurple disabled:opacity-60"
+                  className="btn btn-primary disabled:opacity-60"
                 >
-                  {estado === "enviando" ? "Enviando…" : "Enviar"}
+                  {estado === "enviando" ? "Enviando…" : "Enviar mensaje"}
                 </button>
 
-                <span className="px-2 md:px-6">ó</span>
+                <span className="text-darkpurple/60">o</span>
 
                 <a
                   href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-bold inline-flex items-center gap-2 bg-green px-4 py-2 text-white"
+                  className="btn bg-green text-white hover:bg-[#039a0f]"
                 >
                   <MessageCircle className="size-4" aria-hidden />
                   <span>Escríbenos</span>
@@ -140,7 +140,7 @@ function Campo({
   label: string;
 }) {
   return (
-    <div className={`${className} py-3`}>
+    <div className={`${className} p-2`}>
       {/* El tema usaba solo placeholder, que desaparece al escribir y no lo
           anuncian bien los lectores de pantalla. Se añade una etiqueta real
           oculta visualmente. */}
@@ -152,7 +152,7 @@ function Campo({
         name={id}
         placeholder={label}
         required
-        className="w-full rounded-[15px] border-none bg-graybg px-4 py-2 focus:outline-purple"
+        className="min-h-12 w-full rounded-xl border border-lilac bg-lavender px-4 py-2 text-darkpurple placeholder:text-darkpurple/50 focus:border-purple focus:bg-white focus:outline-none"
         {...props}
       />
     </div>

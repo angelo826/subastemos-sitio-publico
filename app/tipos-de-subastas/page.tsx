@@ -1,4 +1,4 @@
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { EncabezadoPagina } from "@/components/sections/EncabezadoPagina";
 import { CardsCta } from "@/components/sections/CardsCta";
 import { JsonLd } from "@/components/JsonLd";
 import { buildMetadata } from "@/lib/seo";
@@ -21,33 +21,32 @@ export const revalidate = false;
 export default function TiposDeSubastas() {
   return (
     <>
-      <div className="container-bs">
-        <Breadcrumbs
-          migas={[
-            { nombre: "Inicio", href: "/" },
-            { nombre: NOMBRE, href: PATH },
-          ]}
-        />
+      <EncabezadoPagina
+        titulo={TITULO_TIPOS}
+        migas={[
+          { nombre: "Inicio", href: "/" },
+          { nombre: NOMBRE, href: PATH },
+        ]}
+      />
 
-        <h1 className="text-title py-6 text-center text-4xl text-purple">
-          {TITULO_TIPOS}
-        </h1>
-
-        <div className="pb-12">
-          {TIPOS_DE_SUBASTA.map((t) => (
-            <article key={t.titulo} className="py-3">
-              <h2 className="text-bold rounded-[15px] bg-darkpurple p-4 px-6 text-white text-[1.4rem]">
-                {t.titulo}
-              </h2>
-              <p className="p-4">{t.descripcion}</p>
+      <div className="container-bs py-10 md:py-14">
+        <div className="grid gap-5 md:grid-cols-2">
+          {TIPOS_DE_SUBASTA.map((t, i) => (
+            <article
+              key={t.titulo}
+              className="rounded-3xl border border-lilac bg-white p-6 shadow-sm md:p-8"
+            >
+              <span className="text-title grid size-10 place-items-center rounded-full bg-orange text-white">
+                {i + 1}
+              </span>
+              <h2 className="text-title mt-4 text-2xl text-darkpurple">{t.titulo}</h2>
+              <p className="mt-2 text-darkpurple/80">{t.descripcion}</p>
             </article>
           ))}
         </div>
       </div>
 
-      <div className="container-bs py-12">
-        <CardsCta />
-      </div>
+      <CardsCta />
 
       <JsonLd
         data={grafo(
