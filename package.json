@@ -14,7 +14,9 @@
     "typecheck": "tsc --noEmit",
     "datos": "node scripts/extraer-posts.mjs && node scripts/extraer-paginas.mjs && node scripts/dimensiones.mjs --ts",
     "deploy:test": ".\\DeployTest.bat",
-    "deploy:prod": ".\\DeployProd.bat"
+    "deploy:prod": ".\\DeployProd.bat",
+    "deploy:test:mac": "scripts/deploy.sh test",
+    "deploy:prod:mac": "scripts/deploy.sh prod"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",

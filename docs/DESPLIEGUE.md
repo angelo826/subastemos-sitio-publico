@@ -6,8 +6,8 @@ ya usa el backend (`subastemosv2/backend`):
 
 | Entorno | Proyecto GCP | Manifiesto | Script | Dominio backend equivalente |
 |---|---|---|---|---|
-| Test/Dev | `subastemosdev` | `app-Dev.yaml` | `DeployTest.bat` | testingapp.subastemos.mx |
-| Producción | `subastas-dev` | `app.yaml` | `DeployProd.bat` | portal.subastemos.mx |
+| Test/Dev | `subastemosdev` | `app-Dev.yaml` | `DeployTest.bat` / `scripts/deploy.sh test` | testingapp.subastemos.mx |
+| Producción | `subastas-dev` | `app.yaml` | `DeployProd.bat` / `scripts/deploy.sh prod` | portal.subastemos.mx |
 
 Sí, el proyecto de producción se llama `subastas-dev` — es el nombre histórico
 del proyecto en GCP, no describe su propósito. Es el mismo que usa el backend.
@@ -27,8 +27,40 @@ modificar su configuración.
    estilo `testingapp.subastemos.mx`), actualiza `NEXT_PUBLIC_SITE_URL` ahí.
 3. **Confirmar el dominio de producción** en `app.yaml` (`www.subastemos.mx`).
 4. **Crear los secretos** en cada proyecto (abajo).
-5. **Autenticar gcloud** con la cuenta que tiene acceso a ambos proyectos:
-   `gcloud auth login`.
+5. **Autenticar gcloud** con la cuenta que tiene acceso a ambos proyectos.
+   En macOS/Linux, con un directorio de configuración propio del proyecto
+   (ver [Credenciales aisladas](#credenciales-aisladas-macoslinux)).
+
+## Credenciales aisladas (macOS/Linux)
+
+Para no mezclar este proyecto con otras sesiones de gcloud de la misma
+máquina, se usa un `CLOUDSDK_CONFIG` propio. Un `.envrc` local (ignorado por
+git, cargado con [direnv](https://direnv.net)) define:
+
+```bash
+export CLOUDSDK_CONFIG="$HOME/.config/<proyecto>/gcloud"
+export CLOUDSDK_CORE_ACCOUNT="<cuenta>"
+export GOOGLE_APPLICATION_CREDENTIALS="$CLOUDSDK_CONFIG/application_default_credentials.json"
+export SUBASTEMOS_GCP_ACCOUNT="<cuenta>"
+```
+
+- `CLOUDSDK_CORE_ACCOUNT` hace que gcloud falle si esa cuenta no tiene sesión,
+  en vez de usar otra.
+- `GOOGLE_APPLICATION_CREDENTIALS` evita que las librerías cliente de Google
+  caigan al ADC global (`~/.config/gcloud/application_default_credentials.json`),
+  que no respeta `CLOUDSDK_CONFIG`.
+- `scripts/deploy.sh` aborta si `CLOUDSDK_CONFIG` no está definido o apunta
+  al directorio global, o si `SUBASTEMOS_GCP_ACCOUNT` no tiene sesión. Pasa
+  `--project` y `--account` explícitos y nunca hace `gcloud config set`.
+
+Dentro del directorio aislado hay dos configuraciones, `subastemos-dev` y
+`subastemos-prod`, con su proyecto ya fijado:
+
+```bash
+gcloud auth login <cuenta>
+gcloud auth application-default login      # solo si se usan librerías cliente
+gcloud config configurations activate subastemos-dev   # o subastemos-prod
+```
 
 ## Los manifiestos
 
@@ -57,9 +89,9 @@ Los `.yaml` se versionan en git, así que **`BACKEND_API_KEY` y
 `REVALIDATE_TOKEN` no van ahí**. Se crean por proyecto:
 
 ```bash
-gcloud config set project subastemosdev   # o subastas-dev para prod
-echo -n "valor" | gcloud secrets create REVALIDATE_TOKEN --data-file=-
-gcloud secrets add-iam-policy-binding REVALIDATE_TOKEN \
+PROJECT=subastemosdev   # o subastas-dev para prod
+echo -n "valor" | gcloud secrets create REVALIDATE_TOKEN --data-file=- --project=$PROJECT
+gcloud secrets add-iam-policy-binding REVALIDATE_TOKEN --project=$PROJECT \
   --member="serviceAccount:PROYECTO@appspot.gserviceaccount.com" \
   --role="roles/secretmanager.secretAccessor"
 ```
@@ -73,10 +105,11 @@ abierto.
 ### Test
 
 ```bash
-npm run deploy:test
+npm run deploy:test        # Windows
+npm run deploy:test:mac    # macOS/Linux
 ```
 
-Ejecuta `DeployTest.bat`, que:
+Ejecuta `DeployTest.bat` (o `scripts/deploy.sh test`), que:
 
 1. Fija el proyecto activo a `subastemosdev`.
 2. Pide confirmar antes de continuar.
@@ -90,10 +123,11 @@ Ejecuta `DeployTest.bat`, que:
 ### Producción
 
 ```bash
-npm run deploy:prod
+npm run deploy:prod        # Windows
+npm run deploy:prod:mac    # macOS/Linux
 ```
 
-`DeployProd.bat` sigue el mismo flujo contra `subastas-dev` y `app.yaml`, con
+`DeployProd.bat` (o `scripts/deploy.sh prod`) sigue el mismo flujo contra `subastas-dev` y `app.yaml`, con
 una advertencia explícita de que es producción y `--no-promote` marcado como
 recomendado por defecto.
 

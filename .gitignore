@@ -11,3 +11,5 @@ next-env.d.ts
 npm-debug.log*
 CLAUDE.md
 AGENTS.md
+# Credenciales locales (direnv)
+.envrc
