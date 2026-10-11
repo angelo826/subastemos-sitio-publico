@@ -1,16 +1,14 @@
 import Link from "next/link";
 import { ArrowRight, CalendarDays } from "lucide-react";
 import { Foto } from "@/components/Foto";
-import { MARCAS } from "@/data/marcas";
 import { ENLACES_EXTERNOS } from "@/data/site";
 import { SUBASTAS_PROXIMAS } from "@/data/subastas";
 
 /**
  * Bloque principal del inicio.
  *
- * Rediseño oct-2026 a partir del layout del cliente («Oportunidades que te
- * mueven»). Lo primero que se lee es quién es Subastemos: una plataforma de
- * subastas digital y segura. Debajo, el acceso directo a la próxima subasta.
+ * Rediseño oct-2026 a partir del layout del cliente. Lo primero que se lee es
+ * quién es Subastemos: una plataforma de subastas digital y segura. Debajo, el acceso directo a la próxima subasta.
  *
  * La foto es de archivo hasta que el cliente entregue la definitiva.
  */
@@ -37,25 +35,14 @@ export function Hero() {
 
       <div className="container-bs py-16 md:py-24 lg:py-28">
         <div className="max-w-2xl">
-          <p className="text-bold text-xs tracking-[0.25em] text-white/80 uppercase">
-            La plataforma de subastas digitales de
-          </p>
-          <p className="text-title mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-lg text-white md:text-xl">
-            {MARCAS.map((m, i) => (
-              <span key={m} className="flex items-center gap-3">
-                {i > 0 && <span aria-hidden className="hidden h-4 w-px bg-white/40 sm:block" />}
-                {m}
-              </span>
-            ))}
-          </p>
-
-          <h1 className="text-title mt-6 text-[clamp(2.6rem,7vw,4.5rem)] leading-[1.02] text-white">
-            Oportunidades <span className="block text-orange">que te mueven.</span>
+          <h1 className="text-title text-[clamp(2.6rem,7vw,4.5rem)] leading-[1.02] text-white">
+            Plataforma de <span className="block text-orange">subastas digitales</span>
           </h1>
 
           <p className="mt-6 max-w-xl text-lg text-white/90 md:text-xl">
-            Compra o vende vehículos en subastas 100 % digitales: seguras,
-            transparentes y con pago de tus bienes garantizado en 5 días hábiles.
+            Compra o vende vehículos de forma segura y transparente, desde
+            cualquier lugar y con pago de tus bienes garantizado en 5 días
+            hábiles.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
