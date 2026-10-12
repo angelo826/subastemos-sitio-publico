@@ -11,7 +11,7 @@ const PATH = "/contacto";
 const NOMBRE = "Contacto";
 const TITULO = "Contacto";
 const DESCRIPCION =
-  "Escríbenos y resolvemos tus dudas sobre nuestras subastas. Encuéntranos en CDMX y Querétaro.";
+  "Escríbenos y resolvemos tus dudas sobre nuestras subastas. Encuéntranos en Cancún, Monterrey, Guadalajara, Ciudad de México, Querétaro y Mérida.";
 
 export const metadata = buildMetadata({
   titulo: TITULO,

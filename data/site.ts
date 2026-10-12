@@ -14,8 +14,13 @@ export const SITE = {
   anioCopyright: "2022",
 
   descripcion:
-    "Compra o vende a través de métodos innovadores y confiables, con garantía de pago de tus bienes en 5 días hábiles. Encuéntranos en CDMX, Querétaro y Puebla.",
+    "Compra o vende a través de métodos innovadores y confiables, con garantía de pago de tus bienes en 5 días hábiles. Encuéntranos en Cancún, Monterrey, Guadalajara, Ciudad de México, Querétaro y Mérida.",
 
+  /**
+   * Oficina, no patio (confirmado por el cliente, oct-2026). Alimenta el
+   * JSON-LD LocalBusiness y el mapa de /contacto. Los patios están en
+   * data/patios.ts.
+   */
   direccion: {
     calle: "Av. Paseo Constituyentes 1621, El Pueblito",
     localidad: "El Pueblito",
