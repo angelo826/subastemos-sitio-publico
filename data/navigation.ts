@@ -1,5 +1,6 @@
 import { ENLACES_EXTERNOS } from "./site";
 import { SUBASTAS_PROXIMAS } from "./subastas";
+import { PATIOS } from "./patios";
 
 /**
  * Estructura de navegación del portal.
@@ -70,8 +71,7 @@ export const NAV_PRINCIPAL: (EnlaceNav | GrupoNav)[] = [
   {
     label: "Patios",
     items: [
-      { label: "Querétaro", href: "/patios/queretaro" },
-      { label: "Ciudad de México", href: "/patios/ciudad-de-mexico" },
+      ...PATIOS.map((p) => ({ label: p.nombre, href: `/patios/${p.slug}` })),
       { label: "Reserva tu visita", href: "/reservas" },
     ],
   },
@@ -114,10 +114,9 @@ export const COLUMNAS_FOOTER: ColumnaFooter[] = [
   },
   {
     id: "subastas",
-    titulo: "SUBASTAS",
+    titulo: "PATIOS",
     items: [
-      { label: "Querétaro", href: "/patios/queretaro" },
-      { label: "CDMX", href: "/patios/ciudad-de-mexico" },
+      ...PATIOS.map((p) => ({ label: p.nombre, href: `/patios/${p.slug}` })),
       { label: "Calendario de subastas", href: "/calendario" },
       { label: "Tipos de subastas", href: "/tipos-de-subastas", soloMovil: true },
       { label: "Preguntas Frecuentes", href: "/preguntas-frecuentes", soloMovil: true },

@@ -68,7 +68,7 @@ export const PAGINAS: Record<string, PaginaEditorial> = {
   "subastas-bienes-raices": {
     "seo": {
       "titulo": "Subastemos 🚘💰 | Subastas Bienes Raíces",
-      "descripcion": "Compra o vende a través de métodos innovadores y confiables, con garantía de pago de tus bienes en 5 días hábiles. Encuéntranos en CDMX, Querétaro y…",
+      "descripcion": "Compra o vende a través de métodos innovadores y confiables, con garantía de pago de tus bienes en 5 días hábiles. Encuéntranos en Cancún, Monterrey, Guadalajara, Ciudad de México, Querétaro y Mérida.",
       "keywords": [
         "subastas",
         "México",

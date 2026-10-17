@@ -13,7 +13,7 @@ import { PATIOS } from "@/data/patios";
 export const dynamic = "force-static";
 export const revalidate = false;
 
-/** Las dos rutas de patio son fijas y se conocen en el build. */
+/** Las rutas de patio son fijas y se conocen en el build. */
 export function generateStaticParams() {
   return PATIOS.map((p) => ({ slug: p.slug }));
 }
@@ -32,7 +32,7 @@ export async function generateMetadata({
     descripcion: patio.seo.descripcion,
     keywords: patio.seo.keywords,
     path: `/patios/${patio.slug}`,
-    imagen: patio.imagenHero,
+    imagen: patio.imagen,
     imagenAlt: patio.nombre,
   });
 }
@@ -52,8 +52,8 @@ export default async function PaginaPatio({
     <>
       <EncabezadoPagina
         titulo={patio.nombre}
-        subtitulo={patio.tituloBloque}
-        imagen={patio.imagenHero}
+        subtitulo={patio.ubicacion}
+        imagen={patio.imagen}
         migas={[
           { nombre: "Inicio", href: "/" },
           { nombre: patio.nombre, href: path },
@@ -63,7 +63,7 @@ export default async function PaginaPatio({
       <div className="container-bs py-10 md:py-14">
         <div className="grid items-stretch gap-6 lg:grid-cols-2">
           <div className="flex flex-col justify-center rounded-3xl bg-lavender p-6 md:p-10">
-            <h2 className="titulo-seccion">{patio.tituloBloque}</h2>
+            <h2 className="titulo-seccion">Patio {patio.nombre}</h2>
 
             <p className="mt-6 flex items-start gap-3 text-xl text-darkpurple">
               <MapPin className="mt-1 size-6 shrink-0 text-orange" aria-hidden />
@@ -109,7 +109,7 @@ export default async function PaginaPatio({
             titulo: patio.seo.titulo,
             descripcion: patio.seo.descripcion,
             path,
-            imagen: patio.imagenHero,
+            imagen: patio.imagen,
           }),
           breadcrumbs([{ nombre: patio.nombre, path }]),
         )}

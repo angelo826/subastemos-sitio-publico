@@ -13,7 +13,7 @@ import { SITE } from "@/data/site";
 
 const TITULO = "La mejor experiencia de subasta en México";
 const DESCRIPCION =
-  "Compra o vende a través de métodos innovadores y confiables, con garantía de pago de tus bienes en 5 días hábiles. Encuéntranos en CDMX, Querétaro y Puebla.";
+  "Compra o vende a través de métodos innovadores y confiables, con garantía de pago de tus bienes en 5 días hábiles. Encuéntranos en Cancún, Monterrey, Guadalajara, Ciudad de México, Querétaro y Mérida.";
 
 export const metadata = buildMetadata({
   titulo: TITULO,
