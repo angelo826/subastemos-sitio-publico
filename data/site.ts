@@ -60,8 +60,8 @@ const RETORNO_SUBASTAS = encodeURIComponent(`${PLATAFORMA}/auctionlist.aspx?dv=1
 export const ENLACES_EXTERNOS = {
   registro: `${PLATAFORMA}/register.aspx?returnurl=${RETORNO_SUBASTAS}`,
   registroContacto: `${PLATAFORMA}/register.aspx?returnurl=${encodeURIComponent(`${PLATAFORMA}/contact.aspx`)}`,
-  login: `${PLATAFORMA}/login.aspx?returnurl=${RETORNO_SUBASTAS}`,
-  subastas: `${PLATAFORMA}/auctionlist.aspx?dv=2`,
+  login: `${PLATAFORMA}/login.aspx?returnurl=${RETORNO_SUBASTAS}`,  
+  subastas: `https://bitli.pro/2SYXt_b432d947`,
   subastasDv1: `${PLATAFORMA}/auctionlist.aspx?dv=1`,
   inventario: `${PLATAFORMA}/search.aspx`,
 } as const;
