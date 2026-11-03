@@ -43,6 +43,10 @@ if errorlevel 1 (
 echo Build completado correctamente.
 
 echo.
+echo Versiones existentes del servicio sitio-publico:
+call gcloud app versions list --service=sitio-publico --sort-by=~version.createTime --project=subastas-dev
+
+echo.
 set /p VERSION="Ingrese la version a desplegar (ejemplo: v1-0-0): "
 
 if "%VERSION%"=="" (
