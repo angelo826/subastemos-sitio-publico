@@ -1,5 +1,3 @@
-import { ENLACES_EXTERNOS } from "./site";
-
 /**
  * Subastas mostradas en el carrusel del inicio y de las páginas de patio.
  *
@@ -29,9 +27,23 @@ export interface Subasta {
 }
 
 export const SUBASTAS: Subasta[] = [
-  // PROVISIONAL: fecha confirmada por el cliente en la llamada del 9-oct-2026.
-  // Faltan el título oficial, las sedes y el enlace directo a la subasta en la
-  // plataforma; mientras tanto se enlaza al listado de subastas.
+  // Datos tomados de la página de la subasta en la plataforma (2-nov-2026).
+  {
+    id: "subasta-vw-2026-11-04",
+    titulo: "Subasta VW 4 noviembre",
+    fecha: "4 noviembre 2026",
+    fechaIso: "2026-11-04",
+    sedes: ["Querétaro"],
+    imagen: "/uploads/hero-image@3x.webp",
+    acciones: [
+      {
+        label: "Participar",
+        href: "https://subastas.subastemos.mx/Subasta-VW-4-NOVIEMBRE_a81161",
+        externo: true,
+      },
+    ],
+    estado: "proxima",
+  },
   {
     id: "subasta-2026-10-20",
     titulo: "Subasta en línea",
@@ -39,8 +51,8 @@ export const SUBASTAS: Subasta[] = [
     fechaIso: "2026-10-20",
     sedes: [],
     imagen: "/uploads/hero-image@3x.webp",
-    acciones: [{ label: "Participar", href: ENLACES_EXTERNOS.subastas, externo: true }],
-    estado: "proxima",
+    acciones: [],
+    estado: "completada",
   },
   {
     id: "multimarca-2023-05-25",

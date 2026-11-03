@@ -65,8 +65,12 @@ const RETORNO_SUBASTAS = encodeURIComponent(`${PLATAFORMA}/auctionlist.aspx?dv=1
 export const ENLACES_EXTERNOS = {
   registro: `${PLATAFORMA}/register.aspx?returnurl=${RETORNO_SUBASTAS}`,
   registroContacto: `${PLATAFORMA}/register.aspx?returnurl=${encodeURIComponent(`${PLATAFORMA}/contact.aspx`)}`,
-  login: `${PLATAFORMA}/login.aspx?returnurl=${RETORNO_SUBASTAS}`,  
-  subastas: `https://bitli.pro/2SYXt_b432d947`,
+  login: `${PLATAFORMA}/login.aspx?returnurl=${RETORNO_SUBASTAS}`,
+  /**
+   * Listado general. El enlace de una subasta concreta va en sus `acciones`
+   * (data/subastas.ts), para que este no caduque cuando la subasta termine.
+   */
+  subastas: `${PLATAFORMA}/auctionlist.aspx?dv=2`,
   subastasDv1: `${PLATAFORMA}/auctionlist.aspx?dv=1`,
   inventario: `${PLATAFORMA}/search.aspx`,
 } as const;
