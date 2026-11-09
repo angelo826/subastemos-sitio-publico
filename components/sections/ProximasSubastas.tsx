@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, MapPin, MonitorSmartphone, UserPlus } from "lucide-react";
+import { ArrowRight, Clock, MapPin, MonitorSmartphone, UserPlus } from "lucide-react";
 import { ENLACES_EXTERNOS } from "@/data/site";
 import { SUBASTAS_PROXIMAS } from "@/data/subastas";
 import { MESES } from "@/lib/calendario";
@@ -14,9 +14,7 @@ import { MESES } from "@/lib/calendario";
  * participa.
  */
 export function ProximasSubastas() {
-  const subastas = [...SUBASTAS_PROXIMAS].sort((a, b) =>
-    a.fechaIso.localeCompare(b.fechaIso),
-  );
+  const subastas = SUBASTAS_PROXIMAS;
 
   return (
     <section className="container-bs py-14">
@@ -54,6 +52,12 @@ export function ProximasSubastas() {
 
               <div className="flex flex-1 flex-col">
                 <h3 className="text-title text-xl text-darkpurple">{s.titulo}</h3>
+                {s.hora && (
+                  <p className="text-bold mt-1 flex items-center gap-1.5 text-sm text-orange">
+                    <Clock className="size-4" aria-hidden />
+                    {s.hora} h
+                  </p>
+                )}
                 <p className="mt-1 flex items-center gap-1.5 text-sm text-darkpurple/75">
                   {s.sedes.length > 0 ? (
                     <>

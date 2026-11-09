@@ -13,9 +13,10 @@ import { SUBASTAS_PROXIMAS } from "@/data/subastas";
  * La foto es de archivo hasta que el cliente entregue la definitiva.
  */
 export function Hero() {
-  const proxima = [...SUBASTAS_PROXIMAS].sort((a, b) =>
-    a.fechaIso.localeCompare(b.fechaIso),
-  )[0];
+  // Todas las del día más cercano: puede haber varias el mismo día.
+  const proximas = SUBASTAS_PROXIMAS.filter(
+    (s) => s.fechaIso === SUBASTAS_PROXIMAS[0]?.fechaIso,
+  );
 
   return (
     <section className="bg-grad-marca relative isolate overflow-hidden text-white">
@@ -60,22 +61,30 @@ export function Hero() {
             </Link>
           </div>
 
-          {proxima && (
-            <a
-              href={proxima.acciones.find((a) => a.externo)?.href ?? ENLACES_EXTERNOS.subastas}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-10 inline-flex items-center gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur transition-colors hover:bg-white/20"
-            >
-              <CalendarDays className="size-5 text-orange" aria-hidden />
-              <span>
-                <span className="block text-xs text-white/75">Próxima subasta</span>
-                <time dateTime={proxima.fechaIso} className="text-bold">
-                  {proxima.fecha}
-                </time>
-              </span>
-              <ArrowRight className="size-4" aria-hidden />
-            </a>
+          {proximas.length > 0 && (
+            <div className="mt-10 flex flex-wrap gap-3">
+              {proximas.map((proxima) => (
+                <a
+                  key={proxima.id}
+                  href={proxima.acciones.find((a) => a.externo)?.href ?? ENLACES_EXTERNOS.subastas}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 backdrop-blur transition-colors hover:bg-white/20"
+                >
+                  <CalendarDays className="size-5 text-orange" aria-hidden />
+                  <span>
+                    <span className="block text-xs text-white/75">
+                      {proximas.length > 1 ? proxima.titulo : "Próxima subasta"}
+                    </span>
+                    <time dateTime={proxima.fechaIso} className="text-bold">
+                      {proxima.fecha}
+                      {proxima.hora && ` · ${proxima.hora} h`}
+                    </time>
+                  </span>
+                  <ArrowRight className="size-4" aria-hidden />
+                </a>
+              ))}
+            </div>
           )}
         </div>
       </div>

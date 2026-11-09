@@ -37,9 +37,8 @@ function fechaCorta(iso: string): string {
  */
 const PROXIMAS: EnlaceNav[] = [
   ...[...SUBASTAS_PROXIMAS]
-    .sort((a, b) => a.fechaIso.localeCompare(b.fechaIso))
     .map((s) => ({
-      label: fechaCorta(s.fechaIso),
+      label: s.hora ? `${fechaCorta(s.fechaIso)} · ${s.hora} h` : fechaCorta(s.fechaIso),
       detalle: s.sedes.length > 0 ? `${s.titulo} · ${s.sedes.join(" y ")}` : s.titulo,
       href: s.acciones.find((a) => a.externo)?.href ?? ENLACES_EXTERNOS.subastas,
       externo: true,

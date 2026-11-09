@@ -13,6 +13,8 @@ export interface Subasta {
   fecha: string;
   /** La misma fecha en ISO, para ordenar y para <time>. */
   fechaIso: string;
+  /** Hora de inicio (CDMX), "10:00". Desempata subastas del mismo día. */
+  hora?: string;
   /**
    * Sedes donde se celebra. El tema las une con "y". Vacío para subastas
    * 100 % en línea, sin sede asociada.
@@ -27,7 +29,41 @@ export interface Subasta {
 }
 
 export const SUBASTAS: Subasta[] = [
-  // Datos tomados de la página de la subasta en la plataforma (2-nov-2026).
+  // Dos subastas privadas el mismo día, confirmadas por el cliente (9-nov-2026).
+  {
+    id: "subasta-privada-audi-2026-11-11",
+    titulo: "Subasta Privada Audi",
+    fecha: "11 noviembre 2026",
+    fechaIso: "2026-11-11",
+    hora: "10:00",
+    sedes: [],
+    imagen: "/uploads/hero-image@3x.webp",
+    acciones: [
+      {
+        label: "Participar",
+        href: "https://subastas.subastemos.mx/Subasta-Privada-Audi-11-nov_as119943",
+        externo: true,
+      },
+    ],
+    estado: "proxima",
+  },
+  {
+    id: "subasta-privada-vw-2026-11-11",
+    titulo: "Subasta Privada VW",
+    fecha: "11 noviembre 2026",
+    fechaIso: "2026-11-11",
+    hora: "12:30",
+    sedes: [],
+    imagen: "/uploads/hero-image@3x.webp",
+    acciones: [
+      {
+        label: "Participar",
+        href: "https://subastas.subastemos.mx/Subasta-Privada-VW-11-nov_as119944",
+        externo: true,
+      },
+    ],
+    estado: "proxima",
+  },
   {
     id: "subasta-vw-2026-11-04",
     titulo: "Subasta VW 4 noviembre",
@@ -35,14 +71,8 @@ export const SUBASTAS: Subasta[] = [
     fechaIso: "2026-11-04",
     sedes: ["Querétaro"],
     imagen: "/uploads/hero-image@3x.webp",
-    acciones: [
-      {
-        label: "Participar",
-        href: "https://subastas.subastemos.mx/Subasta-VW-4-NOVIEMBRE_a81161",
-        externo: true,
-      },
-    ],
-    estado: "proxima",
+    acciones: [],
+    estado: "completada",
   },
   {
     id: "subasta-2026-10-20",
@@ -84,4 +114,8 @@ export const SUBASTAS: Subasta[] = [
 ];
 
 export const SUBASTAS_COMPLETADAS = SUBASTAS.filter((s) => s.estado === "completada");
-export const SUBASTAS_PROXIMAS = SUBASTAS.filter((s) => s.estado === "proxima");
+/** Próximas, de la más cercana a la más lejana (fecha y luego hora). */
+export const SUBASTAS_PROXIMAS = SUBASTAS.filter((s) => s.estado === "proxima").sort(
+  (a, b) =>
+    a.fechaIso.localeCompare(b.fechaIso) || (a.hora ?? "").localeCompare(b.hora ?? ""),
+);
