@@ -13,10 +13,8 @@ import { SUBASTAS_PROXIMAS } from "@/data/subastas";
  * La foto es de archivo hasta que el cliente entregue la definitiva.
  */
 export function Hero() {
-  // Todas las del día más cercano: puede haber varias el mismo día.
-  const proximas = SUBASTAS_PROXIMAS.filter(
-    (s) => s.fechaIso === SUBASTAS_PROXIMAS[0]?.fechaIso,
-  );
+  // Un acceso por cada próxima subasta, de la más cercana a la más lejana.
+  const proximas = SUBASTAS_PROXIMAS;
 
   return (
     <section className="bg-grad-marca relative isolate overflow-hidden text-white">

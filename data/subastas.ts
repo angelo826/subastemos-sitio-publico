@@ -29,6 +29,39 @@ export interface Subasta {
 }
 
 export const SUBASTAS: Subasta[] = [
+  // Pedidas por el cliente el 11-nov-2026. Sin hora confirmada.
+  {
+    id: "subasta-vw-2026-11-18",
+    titulo: "Subasta VW 18 noviembre",
+    fecha: "18 noviembre 2026",
+    fechaIso: "2026-11-18",
+    sedes: [],
+    imagen: "/uploads/hero-image@3x.webp",
+    acciones: [
+      {
+        label: "Participar",
+        href: "https://subastas.subastemos.mx/Subasta-VW-18-de-Noviembre_as119998",
+        externo: true,
+      },
+    ],
+    estado: "proxima",
+  },
+  {
+    id: "subasta-vw-2026-11-12",
+    titulo: "Subasta VW 12 noviembre",
+    fecha: "12 noviembre 2026",
+    fechaIso: "2026-11-12",
+    sedes: [],
+    imagen: "/uploads/hero-image@3x.webp",
+    acciones: [
+      {
+        label: "Participar",
+        href: "https://subastas.subastemos.mx/Subasta-VW-12-noviembre_as119945",
+        externo: true,
+      },
+    ],
+    estado: "proxima",
+  },
   // Dos subastas privadas el mismo día, confirmadas por el cliente (9-nov-2026).
   {
     id: "subasta-privada-audi-2026-11-11",
@@ -38,14 +71,8 @@ export const SUBASTAS: Subasta[] = [
     hora: "10:00",
     sedes: [],
     imagen: "/uploads/hero-image@3x.webp",
-    acciones: [
-      {
-        label: "Participar",
-        href: "https://subastas.subastemos.mx/Subasta-Privada-Audi-11-nov_as119943",
-        externo: true,
-      },
-    ],
-    estado: "proxima",
+    acciones: [],
+    estado: "completada",
   },
   {
     id: "subasta-privada-vw-2026-11-11",
